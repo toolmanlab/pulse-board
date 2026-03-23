@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📡 Pulse Board</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0f1117;
+  --surface: #161b22;
+  --surface-inset: #0d1117;
+  --border: #21262d;
+  --border-bright: #30363d;
+
+  --text: #e6edf3;
+  --text-2: #8b949e;
+  --text-3: #484f58;
+
+  --red:   #f85149;
+  --yellow: #ffd33d;
+  --blue:  #484f58;
+
+  --watch-color:   #ffd33d;
+  --discuss-color: #58a6ff;
+  --dismiss-color: #da3633;
+  --confirm-color: #3fb950;
+
+  --active-bg: #1f6feb;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, 'PingFang SC', 'SF Pro Text', 'Inter', sans-serif;
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Header ── */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(15,17,23,0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.header-logo { font-size: 22px; }
+.header-title { font-size: 17px; font-weight: 600; color: var(--text); }
+.header-meta { font-size: 12px; color: var(--text-3); margin-left: auto; }
+
+/* ── Filter bar ── */
+.filter-bar {
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(15,17,23,0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+.filter-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+.chips-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.chip-divider {
+  width: 1px;
+  height: 18px;
+  background: var(--border-bright);
+  margin: 0 2px;
+  flex-shrink: 0;
+}
+.fchip {
+  padding: 5px 13px;
+  border-radius: 20px;
+  border: 1px solid var(--border-bright);
+  background: transparent;
+  color: var(--text-2);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.fchip:hover { border-color: var(--text-3); color: var(--text); }
+.fchip.active { background: var(--active-bg); border-color: var(--active-bg); color: #fff; font-weight: 600; }
+.search {
+  margin-left: auto;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border-bright);
+  background: var(--surface-inset);
+  color: var(--text);
+  font-size: 13px;
+  outline: none;
+  width: 200px;
+  transition: border-color .15s;
+  flex-shrink: 0;
+}
+.search:focus { border-color: var(--active-bg); }
+.search::placeholder { color: var(--text-3); }
+
+/* domain chips */
+.domain-chip {
+  padding: 4px 10px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-3);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.domain-chip:hover { border-color: var(--text-3); color: var(--text-2); }
+.domain-chip.active { background: rgba(88,166,255,.12); border-color: rgba(88,166,255,.4); color: #58a6ff; font-weight: 600; }
+
+/* ── Stats ── */
+.statsbar {
+  padding: 8px 24px;
+  display: flex;
+  gap: 20px;
+  font-size: 12px;
+  color: var(--text-3);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.statsbar b { color: var(--text); }
+
+/* ── Grid ── */
+.grid-wrap { padding: 20px 24px; }
+.date-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-3);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  margin-top: 6px;
+}
+.time-label {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-bottom: 10px;
+  padding-left: 4px;
+  opacity: .7;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+/* ── Card ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+  overflow: hidden;
+  position: relative;
+}
+.card:hover {
+  border-color: var(--border-bright);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,.3);
+}
+
+/* grade accent bar */
+.card::before {
+  content: '';
+  display: block;
+  height: 3px;
+  width: 100%;
+  flex-shrink: 0;
+}
+.card.grade-red::before { background: var(--red); }
+.card.grade-yellow::before { background: var(--yellow); }
+.card.grade-blue::before { background: var(--blue); }
+
+/* status border */
+.card.st-watching  { border-color: rgba(255,211,61,.35); }
+.card.st-discussed { border-color: rgba(88,166,255,.35); }
+.card.st-dismissed { opacity: .3; }
+.card.st-confirmed { border-color: rgba(63,185,80,.35); }
+
+.card-body { padding: 16px 16px 0; flex: 1; }
+
+/* grade badge */
+.grade-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  padding: 3px 9px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+.grade-badge.red    { background: rgba(248,81,73,.12); color: var(--red); }
+.grade-badge.yellow { background: rgba(255,211,61,.12); color: var(--yellow); }
+.grade-badge.blue   { background: rgba(72,79,88,.2);    color: var(--text-3); }
+
+/* push count badge */
+.push-count {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--red);
+  background: rgba(248,81,73,.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+}
+
+.card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+  margin-bottom: 9px;
+  text-decoration: none;
+  display: block;
+}
+.card-title:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+
+.card-summary {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+
+/* insight / route impact expand area */
+.card-expand-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  color: var(--text-3);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 10px;
+  transition: color .12s;
+}
+.card-expand-toggle:hover { color: var(--text-2); }
+.expand-arrow { transition: transform .2s; display: inline-block; font-size: 10px; }
+.expand-arrow.open { transform: rotate(90deg); }
+
+.card-detail {
+  font-size: 13px;
+  color: var(--text-2);
+  background: var(--surface-inset);
+  border-top: 1px solid var(--border);
+  padding: 12px 16px;
+  line-height: 1.7;
+  display: none;
+}
+.card-detail.open { display: block; }
+.detail-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-3);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.detail-section { margin-bottom: 10px; }
+.detail-section:last-child { margin-bottom: 0; }
+
+/* domain tag */
+.card-domain {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--surface-inset);
+  color: var(--text-2);
+  border: 1px solid var(--border);
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+/* source row */
+.card-source {
+  font-size: 12px;
+  color: var(--text-3);
+  margin-bottom: 10px;
+}
+.card-source a {
+  color: #58a6ff;
+  text-decoration: none;
+}
+.card-source a:hover { text-decoration: underline; }
+
+/* action bar */
+.card-actions {
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-top: 1px solid var(--border);
+}
+.action-btn {
+  padding: 4px 11px;
+  border-radius: 6px;
+  border: 1px solid var(--border-bright);
+  background: transparent;
+  color: var(--text-2);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all .15s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.action-btn:hover { border-color: var(--text-3); color: var(--text); background: rgba(255,255,255,.04); }
+.action-btn.on-watch   { border-color: rgba(255,211,61,.5);  background: rgba(255,211,61,.08);  color: var(--watch-color); }
+.action-btn.on-discuss { border-color: rgba(88,166,255,.5);  background: rgba(88,166,255,.08);  color: var(--discuss-color); }
+.action-btn.on-dismiss { border-color: rgba(218,54,51,.5);   background: rgba(218,54,51,.08);   color: var(--dismiss-color); }
+.action-btn.on-confirm { border-color: rgba(63,185,80,.5);   background: rgba(63,185,80,.08);   color: var(--confirm-color); }
+.card-link {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text-3);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  transition: color .12s;
+}
+.card-link:hover { color: var(--text-2); }
+
+.empty { text-align: center; padding: 80px; color: var(--text-3); font-size: 15px; }
+
+/* status badge */
+.status-badge {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+}
+.status-badge.pushed  { background: rgba(63,185,80,.1); color: #3fb950; }
+.status-badge.skipped { background: rgba(72,79,88,.2); color: var(--text-3); }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .header { padding: 12px; gap: 8px; }
+  .header-logo { font-size: 18px; }
+  .header-title { font-size: 18px; }
+  .header-meta { font-size: 11px; }
+
+  .statsbar {
+    padding: 6px 12px;
+    display: block;
+    font-size: 11px;
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+  .statsbar span { display: inline; }
+  .statsbar span + span::before { content: ' · '; color: var(--text-3); }
+
+  .filter-bar {
+    padding: 8px 12px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .search { margin-left: 0; width: 100%; }
+  .chips-row {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 6px;
+  }
+  .chips-row::-webkit-scrollbar { display: none; }
+  .fchip, .domain-chip { padding: 4px 10px; font-size: 12px; flex-shrink: 0; }
+
+  .grid-wrap { padding: 14px 12px; }
+  .grid { grid-template-columns: 1fr; gap: 10px; }
+  .empty { padding: 40px 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="header-logo">📡</span>
+  <span class="header-title">Pulse Board</span>
+  <span class="header-meta" id="metaText">最后同步：加载中…</span>
+</div>
+
+<div class="filter-bar">
+  <input class="search" id="searchInput" type="text" placeholder="搜索标题 / 摘要 / 来源…">
+  <div class="filter-row">
+    <div class="chips-row" id="mainChips">
+      <button class="fchip active" data-f="all">全部</button>
+      <button class="fchip" data-f="red">路线级 🔴</button>
+      <button class="fchip" data-f="yellow">值得了解 🟡</button>
+      <button class="fchip" data-f="skipped">已跳过</button>
+      <span class="chip-divider"></span>
+      <button class="fchip" data-f="unread">待处理</button>
+      <button class="fchip" data-f="confirmed">✓ 已确认</button>
+      <button class="fchip" data-f="watching">👀 关注中</button>
+    </div>
+    <div class="chips-row" id="domainChips"></div>
+  </div>
+</div>
+
+<div class="statsbar">
+  <span>共 <b id="sTot">0</b> 条</span>
+  <span>🔴 路线级 <b id="sRed">0</b></span>
+  <span>🟡 值得了解 <b id="sYellow">0</b></span>
+  <span>已跳过 <b id="sSkipped">0</b></span>
+  <span>✓ 已确认 <b id="sConfirmed">0</b></span>
+  <span style="margin-left:auto">显示 <b id="sShown">0</b> 条</span>
+</div>
+
+<div class="grid-wrap" id="gridWrap"></div>
+
+<script>
+// ─── Data ───────────────────────────────────────────────────────────────────
+const DATA = [
+  {id:"ps_20260323_1200_000",date:"2026-03-23",time:"12:00",grade:"🔵",title:"ljg-paper Skill 升级（论文解读工具）",source:"@lijigang",sourceUrl:"https://x.com/lijigang/status/2035920088080294340",domain:"开发者工具",summary:"D 级博主，Skill 工程工具级，不改变学什么。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260323_1200_001",date:"2026-03-23",time:"12:00",grade:"🔵",title:"ljg-travel Skill 发布（旅游攻略）",source:"@lijigang",sourceUrl:"https://x.com/lijigang/status/2035919323739590996",domain:"开发者工具",summary:"非 AI 工程。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260323_1200_002",date:"2026-03-23",time:"12:00",grade:"🔵",title:"Codepilot 微信桥接 0.38.5",source:"@op7418",sourceUrl:"",domain:"其他",summary:"09:00 已覆盖同一条目（duplicate）",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260323_1200_003",date:"2026-03-23",time:"12:00",grade:"🔵",title:"Flash-MoE",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47476422",domain:"其他",summary:"持续升温但已覆盖，工具级",insight:"323pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260323_1200_004",date:"2026-03-23",time:"12:00",grade:"🔵",title:"\"OpenClaw is a security nightmare\"",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47479962",domain:"Agent 安全",summary:"安全讨论，已覆盖",insight:"310pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260323_1200_005",date:"2026-03-23",time:"12:00",grade:"🔵",title:"\"Reports of code's death are greatly exaggerated\"",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47476315",domain:"其他",summary:"已覆盖",insight:"304pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260323_1200_006",date:"2026-03-23",time:"12:00",grade:"🔵",title:"\"What Young Workers Are Doing to AI-Proof Themselves\"",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47480447",domain:"其他",summary:"已覆盖",insight:"92pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260323_1200_007",date:"2026-03-23",time:"12:00",grade:"🔵",title:"\"Teaching Claude to QA a mobile app\"",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47480900",domain:"其他",summary:"工具级，已覆盖",insight:"75pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260323_1200_008",date:"2026-03-23",time:"12:00",grade:"🔵",title:"\"They're Vibe-Coding Spam Now\"",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47482760",domain:"其他",summary:"已覆盖",insight:"51pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260323_1200_009",date:"2026-03-23",time:"12:00",grade:"🔵",title:"OpenAI to double workforce",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47484605",domain:"求职就业",summary:"极早期，招聘扩张非路线信号。跳过",insight:"9pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260323_1200_010",date:"2026-03-23",time:"12:00",grade:"🔵",title:"AI ends online anonymity",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47484833",domain:"Agent 安全",summary:"极早期，隐私安全非路线信号。跳过",insight:"10pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260323_0900_000",date:"2026-03-23",time:"09:00",grade:"🔵",title:"Cognition Devin 使用量 MoM 50%+ 增长",source:"@swyx",sourceUrl:"https://x.com/swyx/status/2035879529340932413",domain:"其他",summary:"编码 Agent 市场验证，不改变学什么。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260323_0900_001",date:"2026-03-23",time:"09:00",grade:"🔵",title:"Starlette 1.0 发布",source:"@simonw",sourceUrl:"https://x.com/simonw/status/2035872409421770901",domain:"其他",summary:"Python web 框架，非路线信号。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260323_0900_002",date:"2026-03-23",time:"09:00",grade:"🔵",title:"Codepilot 微信桥接 0.38.5",source:"@op7418",sourceUrl:"https://twitter.com/op7418/status/2035872378673324446",domain:"产品生态",summary:"产品生态更新。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260323_0900_003",date:"2026-03-23",time:"09:00",grade:"🔵",title:"Claude Code vs OpenClaw 体验对比",source:"@petergyang",sourceUrl:"https://x.com/petergyang/status/2035883215840542861",domain:"Agent 框架",summary:"B 级博主产品观点级。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260323_0900_004",date:"2026-03-23",time:"09:00",grade:"🔵",title:"\"Reports of code's death are greatly exaggerated\"",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47476315",domain:"其他",summary:"3/19 spec=code 同线。跳过",insight:"223pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260323_0900_005",date:"2026-03-23",time:"09:00",grade:"🔵",title:"Flash-MoE",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47476422",domain:"其他",summary:"已覆盖。跳过",insight:"296pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260323_0900_006",date:"2026-03-23",time:"09:00",grade:"🔵",title:"\"OpenClaw is a security nightmare\"",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47479962",domain:"Agent 安全",summary:"安全讨论，不改变学什么。跳过",insight:"283pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260323_0900_007",date:"2026-03-23",time:"09:00",grade:"🔵",title:"\"They're Vibe-Coding Spam Now\"",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47482760",domain:"其他",summary:"极早期。跳过",insight:"23pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260323_0900_008",date:"2026-03-23",time:"09:00",grade:"🔵",title:"\"Teaching Claude to QA a mobile app\"",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47480900",domain:"其他",summary:"工具级。跳过",insight:"61pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260323_0900_009",date:"2026-03-23",time:"09:00",grade:"🔵",title:"\"What Young Workers Are Doing to AI-Proof Themselves\"",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47480447",domain:"其他",summary:"职业文章。跳过",insight:"61pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_2100_000",date:"2026-03-22",time:"21:00",grade:"🔵",title:"中国 Embodydeep 仿生机器人租赁",source:"@rohanpaul_ai",sourceUrl:"https://x.com/rohanpaul_ai/status/2035623866018722022",domain:"AI 基建",summary:"C 级搬运，硬件/机器人方向。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_2100_001",date:"2026-03-22",time:"21:00",grade:"🔵",title:"Wanman Autoresearch 代码优化（4 行代码）",source:"@turingou",sourceUrl:"https://x.com/turingou/status/2035642572165812403",domain:"其他",summary:"D 级博主，工具级代码片段，Autoresearch 已多次覆盖。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_2100_002",date:"2026-03-22",time:"21:00",grade:"🔵",title:"微信接入龙虾影响讨论",source:"@PMbackttfuture",sourceUrl:"https://x.com/PMbackttfuture/status/2035651004449059300",domain:"产品生态",summary:"产品生态/隐私讨论，不改变学什么。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_2100_003",date:"2026-03-22",time:"21:00",grade:"🔵",title:"医疗发票自付一二解析",source:"@plantegg",sourceUrl:"https://x.com/plantegg/status/2035655222530347432",domain:"其他",summary:"非 AI 内容。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_2100_004",date:"2026-03-22",time:"21:00",grade:"🔵",title:"出海收款零损耗指南（Stripe vs Wise）",source:"@wlzh",sourceUrl:"https://x.com/wlzh/status/2035645744192139606",domain:"产品生态",summary:"非 AI 内容。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_2100_005",date:"2026-03-22",time:"21:00",grade:"🔵",title:"Flash-Moe",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47476422",domain:"其他",summary:"397B MoE 模型在 48GB Mac 上运行。工具级推理优化，不改变学什么。跳过",insight:"66pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_2100_006",date:"2026-03-22",time:"21:00",grade:"🔵",title:"Tinybox",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47470773",domain:"AI 基建",summary:"持续升温但硬件方向。已覆盖",insight:"523pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_2100_007",date:"2026-03-22",time:"21:00",grade:"🔵",title:"\"Thinking Fast Slow Artificial\"",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47467913",domain:"其他",summary:"稳定。已覆盖",insight:"169pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_2100_008",date:"2026-03-22",time:"21:00",grade:"🔵",title:"Sashiko",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47474323",domain:"其他",summary:"极早期。已覆盖",insight:"36pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_2100_009",date:"2026-03-22",time:"21:00",grade:"🔵",title:"Cross-Model Void Convergence",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47475155",domain:"其他",summary:"极早期。已覆盖",insight:"38pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_2100_010",date:"2026-03-22",time:"21:00",grade:"🔴",title:"K",source:"@karpathy",sourceUrl:"https://x.com/karpathy/status/2035173492447224237",domain:"Context Engineering",summary:"重复推送第2次",insight:"",routeImpact:"",status:"pushed",pushCount:2,alexStatus:"unread"},
+  {id:"ps_20260322_1800_000",date:"2026-03-22",time:"18:00",grade:"🟡",title:"代码 LLM 转向信息调度（综述论文）",source:"@frxiaobei",sourceUrl:"https://x.com/frxiaobei/status/2035633563224395831",domain:"Agent 框架",summary:"T2 同线（\"信息调度>硬件堆砌\"、\"lost in the middle\"、coding agent harness 涌现），确认已有方向但不改变路线。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1800_001",date:"2026-03-22",time:"18:00",grade:"🔵",title:"医疗 AI 小模型落地观",source:"@frxiaobei",sourceUrl:"https://x.com/frxiaobei/status/2035641993683226837",domain:"其他",summary:"垂直行业，不改变学什么。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1800_002",date:"2026-03-22",time:"18:00",grade:"🔵",title:"OpenEvidence 临床咨询破百万",source:"@frxiaobei",sourceUrl:"https://x.com/frxiaobei/status/2035641990269059429",domain:"其他",summary:"垂直行业。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1800_003",date:"2026-03-22",time:"18:00",grade:"🔵",title:"xAI Terafab $200 亿芯片工厂",source:"@rohanpaul_ai",sourceUrl:"https://x.com/rohanpaul_ai/status/2035620321743753305",domain:"AI 基建",summary:"C 级搬运，硬件/基建。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1800_004",date:"2026-03-22",time:"18:00",grade:"🔵",title:"中国 AI 电动滑板车",source:"@rohanpaul_ai",sourceUrl:"https://x.com/rohanpaul_ai/status/2035621790312186320",domain:"产品生态",summary:"C 级搬运，消费产品。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1800_005",date:"2026-03-22",time:"18:00",grade:"🔵",title:"微信+OpenClaw 隐私担忧",source:"@fankaishuoai",sourceUrl:"https://x.com/fankaishuoai/status/2035651314622005452",domain:"Agent 框架",summary:"15:00 已覆盖同事件。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1800_006",date:"2026-03-22",time:"18:00",grade:"🔵",title:"OpenCLI AI 基建更新",source:"@jakevin7",sourceUrl:"https://x.com/jakevin7/status/2035656997903991242",domain:"开发者工具",summary:"工具级，已覆盖同线。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1800_007",date:"2026-03-22",time:"18:00",grade:"🔵",title:"MSA 超长记忆论文（EverMind）",source:"@wlzh",sourceUrl:"https://x.com/wlzh/status/2035585278325461242",domain:"Agent Memory",summary:"? 级未评级博主，Agent Memory 同线但无独立验证。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1800_008",date:"2026-03-22",time:"18:00",grade:"🔴",title:"K",source:"@karpathy",sourceUrl:"https://x.com/karpathy/status/2035173492447224237",domain:"Context Engineering",summary:"重复推送第2次",insight:"",routeImpact:"",status:"pushed",pushCount:2,alexStatus:"unread"},
+  {id:"ps_20260322_1500_000",date:"2026-03-22",time:"15:00",grade:"🔵",title:"YouTube 字幕 Skill（baoyu-youtube-transcript）",source:"@dotey",sourceUrl:"https://x.com/dotey/status/2035575139316719911",domain:"开发者工具",summary:"工具级 Skill 工程，不改变学什么。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1500_001",date:"2026-03-22",time:"15:00",grade:"🔵",title:"睡眠清理脑废物机制",source:"@rohanpaul_ai",sourceUrl:"https://x.com/rohanpaul_ai/status/2035586848672952589",domain:"其他",summary:"C 级搬运，神经科学非 AI 工程。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1500_002",date:"2026-03-22",time:"15:00",grade:"🔵",title:"月球电磁发射器构想",source:"@rohanpaul_ai",sourceUrl:"https://x.com/rohanpaul_ai/status/2035584713197576302",domain:"其他",summary:"C 级搬运，太空话题。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1500_003",date:"2026-03-22",time:"15:00",grade:"🔵",title:"OpenClaw 视频编辑自动化",source:"@rohanpaul_ai",sourceUrl:"https://x.com/rohanpaul_ai/status/2035582490036113565",domain:"Agent 框架",summary:"C 级搬运，创意工具流水线非路线信号。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1500_004",date:"2026-03-22",time:"15:00",grade:"🔵",title:"微信接入 OpenClaw 安全讨论",source:"@fankaishuoai",sourceUrl:"https://x.com/fankaishuoai/status/2035596516543639620",domain:"Agent 安全",summary:"12:00 已覆盖同事件。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1500_005",date:"2026-03-22",time:"15:00",grade:"🔵",title:"微信 OpenClaw 插件",source:"@wlzh",sourceUrl:"https://x.com/wlzh/status/2035593679336063122",domain:"Agent 框架",summary:"12:00 已覆盖。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1500_006",date:"2026-03-22",time:"15:00",grade:"🔴",title:"K",source:"@karpathy",sourceUrl:"https://x.com/karpathy/status/2035173492447224237",domain:"Context Engineering",summary:"重复推送第2次",insight:"",routeImpact:"",status:"pushed",pushCount:2,alexStatus:"unread"},
+  {id:"ps_20260322_1200_000",date:"2026-03-22",time:"12:00",grade:"🔵",title:"Claude Opus 分析 HN 1000 条评论剖析用户",source:"@simonw",sourceUrl:"https://x.com/simonw/status/2035509993664127455",domain:"其他",summary:"LLM 能力/隐私演示级，不改变学什么。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1200_001",date:"2026-03-22",time:"12:00",grade:"🔵",title:"微信上线 OpenClaw 官方插件（灰度测试）",source:"@op7418",sourceUrl:"https://x.com/op7418/status/2035564154636087770",domain:"Agent 框架",summary:"产品生态更新。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1200_002",date:"2026-03-22",time:"12:00",grade:"🔵",title:"微信 OpenClaw 插件（同一事件）",source:"@frxiaobei",sourceUrl:"https://x.com/frxiaobei/status/2035550119995768884",domain:"Agent 框架",summary:"交叉验证确认但仍是产品更新。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1200_003",date:"2026-03-22",time:"12:00",grade:"🔵",title:"微信接入 OpenClaw（同一事件）",source:"@jakevin7",sourceUrl:"https://x.com/jakevin7/status/2035545523160231995",domain:"Agent 框架",summary:"第三人报道同一事件。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1200_004",date:"2026-03-22",time:"12:00",grade:"🔵",title:"代理推理奖励模型论文",source:"@rohanpaul_ai",sourceUrl:"https://x.com/rohanpaul_ai/status/2035541724224000425",domain:"学术研究",summary:"C 级搬运学术论文。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1200_005",date:"2026-03-22",time:"12:00",grade:"🔵",title:"多代理心智理论评估论文",source:"@rohanpaul_ai",sourceUrl:"https://x.com/rohanpaul_ai/status/2035526373238820931",domain:"学术研究",summary:"C 级搬运学术论文。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1200_006",date:"2026-03-22",time:"12:00",grade:"🟡",title:"AI-Native 工程师招聘面试官手册（GitHub）",source:"@plantegg",sourceUrl:"https://x.com/plantegg/status/2035534242000867770",domain:"求职就业",summary:"参考级，Alex 求职相关但不改变学什么。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_1200_007",date:"2026-03-22",time:"12:00",grade:"🔴",title:"K",source:"@karpathy",sourceUrl:"https://x.com/karpathy/status/2035173492447224237",domain:"Context Engineering",summary:"重复推送第2次",insight:"",routeImpact:"",status:"pushed",pushCount:2,alexStatus:"unread"},
+  {id:"ps_20260322_0900_000",date:"2026-03-22",time:"09:00",grade:"🔵",title:"未成年人保护判刑争议",source:"@plantegg",sourceUrl:"https://x.com/plantegg/status/2035516626498703829",domain:"其他",summary:"社会新闻，与 AI/技术无关。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_0900_001",date:"2026-03-22",time:"09:00",grade:"🔵",title:"OpenClaw+MSA 记忆机制 100M token",source:"@wlzh",sourceUrl:"https://x.com/wlzh/status/2035509459687239690",domain:"Agent Memory",summary:"? 级未评级博主，Agent Memory 同线但无论文/具体数据支撑。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_0900_002",date:"2026-03-22",time:"09:00",grade:"🔵",title:"OpenCode",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47460525",domain:"Agent 框架",summary:"- OpenCode (47460525) 升至 1193pt/586c（昨日 916pt），仍为本周 AI 最热帖。已覆盖",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_0900_003",date:"2026-03-22",time:"09:00",grade:"🔵",title:"Tinybox 离线 AI 设备 120B",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47470773",domain:"产品生态",summary:"tinygrad 硬件产品，消费级设备不改变学什么。跳过",insight:"276pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_0900_004",date:"2026-03-22",time:"09:00",grade:"🔵",title:"Mamba-3",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47419391",domain:"学术研究",summary:"SSM 架构论文，稳定，已覆盖",insight:"275pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_0900_005",date:"2026-03-22",time:"09:00",grade:"🔵",title:"Cursor/Kimi K2.5",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47452404",domain:"国产模型",summary:"稳定，已覆盖",insight:"270pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_0900_006",date:"2026-03-22",time:"09:00",grade:"🔵",title:"Attention Residuals",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47458595",domain:"其他",summary:"稳定，已覆盖",insight:"229pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_0900_007",date:"2026-03-22",time:"09:00",grade:"🔵",title:"Meta Omnilingual MT",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47421749",domain:"学术研究",summary:"1600 语言翻译，学术级非 Agent 工程。跳过",insight:"113pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_0900_008",date:"2026-03-22",time:"09:00",grade:"🔵",title:"\"Thinking Fast, Slow, and Artificial\"",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47467913",domain:"求职就业",summary:"AI 改变人类推理论文，面试谈资但不改变路线。跳过",insight:"87pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260322_0900_009",date:"2026-03-22",time:"09:00",grade:"🔴",title:"K",source:"@karpathy",sourceUrl:"https://x.com/karpathy/status/2035173492447224237",domain:"Context Engineering",summary:"重复推送第2次",insight:"",routeImpact:"",status:"pushed",pushCount:2,alexStatus:"unread"},
+  {id:"ps_20260321_2100_000",date:"2026-03-21",time:"21:00",grade:"🔵",title:"提示注入未解决（推理模型不等于解决 prompt injection）",source:"@simonw",sourceUrl:"https://x.com/simonw/status/2035287200959709309",domain:"Agent 安全",summary:"Agent 安全观点级，不改变学什么。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_2100_001",date:"2026-03-21",time:"21:00",grade:"🔵",title:"AI PUA Skill 9K star（职场 PUA 话术逼 AI 持续调试）",source:"@frxiaobei",sourceUrl:"https://x.com/frxiaobei/status/2035292904768634932",domain:"开发者工具",summary:"prompt engineering 技巧，有趣但不改变路线。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_2100_002",date:"2026-03-21",time:"21:00",grade:"🔵",title:"中国 AI 模型差距缩小（FT 图表）",source:"@rohanpaul_ai",sourceUrl:"https://x.com/rohanpaul_ai/status/2035323734987534363",domain:"其他",summary:"C 级搬运，宏观趋势。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_2100_003",date:"2026-03-21",time:"21:00",grade:"🔵",title:"BitVLA 机器人模型压缩",source:"@rohanpaul_ai",sourceUrl:"https://x.com/rohanpaul_ai/status/2035302878286619132",domain:"AI 基建",summary:"硬件/机器人方向。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_2100_004",date:"2026-03-21",time:"21:00",grade:"🔵",title:"8 种 AI 模型架构图解",source:"@akshay_pachaar",sourceUrl:"https://x.com/akshay_pachaar/status/2035297542662140344",domain:"其他",summary:"教学级内容。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_2100_005",date:"2026-03-21",time:"21:00",grade:"🔵",title:"opencli v1.1（插件系统+CDP 浏览器自动化）",source:"@jakevin7",sourceUrl:"https://x.com/jakevin7/status/2035322467481485319",domain:"开发者工具",summary:"工具更新，3/21 09:00 已推 v1.0 同线。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_2100_006",date:"2026-03-21",time:"21:00",grade:"🔴",title:"K",source:"@karpathy",sourceUrl:"https://x.com/karpathy/status/2035173492447224237",domain:"Context Engineering",summary:"重复推送第2次",insight:"",routeImpact:"",status:"pushed",pushCount:2,alexStatus:"unread"},
+  {id:"ps_20260321_1800_000",date:"2026-03-21",time:"18:00",grade:"🔵",title:"白宫 AI 政策框架",source:"@rohanpaul_ai",sourceUrl:"https://x.com/rohanpaul_ai/status/2035282506917052449",domain:"其他",summary:"政策层非技术，与 Alex 方向弱相关。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1800_001",date:"2026-03-21",time:"18:00",grade:"🔵",title:"中国仿生机器人手",source:"@rohanpaul_ai",sourceUrl:"https://x.com/rohanpaul_ai/status/2035282054083166588",domain:"AI 基建",summary:"硬件方向。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1800_002",date:"2026-03-21",time:"18:00",grade:"🔵",title:"谷歌 1GW 灵活能源",source:"@rohanpaul_ai",sourceUrl:"https://x.com/rohanpaul_ai/status/2035278626539885012",domain:"其他",summary:"基础设施/能源。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1800_003",date:"2026-03-21",time:"18:00",grade:"🔵",title:"ORV 机器人视频生成",source:"@rohanpaul_ai",sourceUrl:"https://x.com/rohanpaul_ai/status/2035256240826458440",domain:"学术研究",summary:"学术论文。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1500_000",date:"2026-03-21",time:"15:00",grade:"🔴",title:"No Priors 播客：编码代理掌握在于 context 文档和规范工程",source:"@karpathy",sourceUrl:"https://x.com/karpathy/status/2035173492447224237",domain:"Context Engineering",summary:"推送。A 级博主重磅播客，与 T2 Context Engineering 直接相关。",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1500_001",date:"2026-03-21",time:"15:00",grade:"🟡",title:"AI 模型个性塑造（SOUL.md 长文档实现）",source:"@karpathy",sourceUrl:"https://x.com/karpathy/status/2035170809304723736",domain:"其他",summary:"作为播客推送的组成部分提及。",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1500_002",date:"2026-03-21",time:"15:00",grade:"🔵",title:"No Priors 播客发布推文",source:"@karpathy",sourceUrl:"https://x.com/karpathy/status/2035158351357911527",domain:"其他",summary:"播客入口推文，与上条同一事件。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1500_003",date:"2026-03-21",time:"15:00",grade:"🟡",title:"Claw4S 会议：Stanford+Princeton 要求可执行 SKILL.md 投稿",source:"@rohanpaul_ai",sourceUrl:"https://x.com/rohanpaul_ai/status/2035222884092977529",domain:"开发者工具",summary:"推送。C 级博主但内容本身有价值（AI 科学出版范式变革）。",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1500_004",date:"2026-03-21",time:"15:00",grade:"🔵",title:"AI 编码项目记忆结构五层分析",source:"@frxiaobei",sourceUrl:"https://x.com/frxiaobei/status/2035227974237143050",domain:"Agent Memory",summary:"未评级博主，观点级文章，Agent Memory 同线但无新数据。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1500_005",date:"2026-03-21",time:"15:00",grade:"🔵",title:"Cursor Composer-2 基于 Kimi K2.5 中文解读",source:"@op7418",sourceUrl:"https://x.com/op7418/status/2035165486628184468",domain:"国产模型",summary:"09:00 已推同一事件。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1500_006",date:"2026-03-21",time:"15:00",grade:"🔵",title:"Agent 日记定时任务",source:"@lijigang",sourceUrl:"https://x.com/lijigang/status/2035194617117995144",domain:"其他",summary:"观点级实践建议。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1500_007",date:"2026-03-21",time:"15:00",grade:"🔵",title:"vibelab.live 重大更新",source:"@turingou",sourceUrl:"https://x.com/turingou/status/2035176064788615310",domain:"产品生态",summary:"产品更新非 AI 工程信号。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1500_008",date:"2026-03-21",time:"15:00",grade:"🔵",title:"国产 AI 模型限额问题",source:"@fankaishuoai",sourceUrl:"https://x.com/fankaishuoai/status/2035197585363976254",domain:"其他",summary:"个人体验无定量数据。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1500_009",date:"2026-03-21",time:"15:00",grade:"🔵",title:"Claude Dispatch 评测",source:"@fankaishuoai",sourceUrl:"https://x.com/fankaishuoai/status/2035166502165594339",domain:"产品生态",summary:"产品对比观点级。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1200_000",date:"2026-03-21",time:"12:00",grade:"🔵",title:"Cursor Composer-2 基于 Kimi K2.5",source:"@op7418",sourceUrl:"https://x.com/op7418/status/2035165486628184468",domain:"国产模型",summary:"09:00 已推同一事件，本条为中文圈正面解读（Kimi 授权合作），补充视角但不新推。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1200_001",date:"2026-03-21",time:"12:00",grade:"🔵",title:"AI Agent 日记机制",source:"@lijigang",sourceUrl:"https://x.com/lijigang/status/2035194617117995144",domain:"Agent Memory",summary:"观点级实践建议，Agent soul/memory 日记定时任务。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1200_002",date:"2026-03-21",time:"12:00",grade:"🔵",title:"vibelab.live 重大更新",source:"@turingou",sourceUrl:"https://x.com/turingou/status/2035176064788615310",domain:"产品生态",summary:"D 级博主产品更新，非 AI 工程信号。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1200_003",date:"2026-03-21",time:"12:00",grade:"🔵",title:"国内 AI 模型限额问题（GLM/Kimi 率限）",source:"@fankaishuoai",sourceUrl:"https://x.com/fankaishuoai/status/2035197585363976254",domain:"国产模型",summary:"个人体验无定量数据。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1200_004",date:"2026-03-21",time:"12:00",grade:"🔵",title:"Claude Dispatch 评测",source:"@fankaishuoai",sourceUrl:"https://x.com/fankaishuoai/status/2035166502165594339",domain:"产品生态",summary:"产品对比观点级，3/20 已推 Channels 同线。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1200_005",date:"2026-03-21",time:"12:00",grade:"🔵",title:"OpenCode",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47460525",domain:"Agent 框架",summary:"- OpenCode (47460525) 升至 533pt/240c（09:00 报 378pt/183c），持续热度上升，已覆盖",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1200_006",date:"2026-03-21",time:"12:00",grade:"🔵",title:"Cursor/Kimi K2.5",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47452404",domain:"国产模型",summary:"- Cursor/Kimi K2.5 (47452404) 稳定在 258pt/144c，已覆盖",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1200_007",date:"2026-03-21",time:"12:00",grade:"🔵",title:"Claude Code Channels",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47448524",domain:"其他",summary:"- Claude Code Channels (47448524) 稳定在 391pt/242c，已覆盖",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1200_008",date:"2026-03-21",time:"12:00",grade:"🟡",title:"MoonshotAI Attention Residuals",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47458595",domain:"国产模型",summary:"推送。Moonshot AI (Kimi 母公司) 发布 Attention Residuals 论文，用深度注意力替代固定残差连接，Block AttnRes 节省 1.25x 训练计算。许可证争议中同步展示研究实力",insight:"135pt on HN",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_1200_009",date:"2026-03-21",time:"12:00",grade:"🔵",title:"Delve 假合规丑闻",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47444319",domain:"其他",summary:"合规创业公司造假，与 AI 工程弱相关。跳过",insight:"587pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_0900_000",date:"2026-03-21",time:"09:00",grade:"🔵",title:"Codex 非模型中立 vs Cursor 多模型优势",source:"@pelaseyed",sourceUrl:"https://x.com/pelaseyed/status/2035149732117352916",domain:"Agent 框架",summary:"D 级博主观点级，Codex vs Cursor 竞争分析但无新数据。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_0900_001",date:"2026-03-21",time:"09:00",grade:"🔵",title:"Cursor 模型中立平台优势",source:"@pelaseyed",sourceUrl:"https://x.com/pelaseyed/status/2035149352939761823",domain:"Agent 框架",summary:"同上条同角度重复，跳过。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_0900_002",date:"2026-03-21",time:"09:00",grade:"🟡",title:"Cursor Composer 2 = Kimi K2.5 许可证争议",source:"@fankaishuoai",sourceUrl:"https://x.com/fankaishuoai/status/2035145497560981785",domain:"国产模型",summary:"与 HN 47452404 交叉验证（256pt/140c），中文圈视角补充。 HN 信号的博主佐证",insight:"Moonshot 预训练负责人指控 tokenizer 完全一致。Cursor 月收入 $1.67 亿，是许可触发门槛 8 倍",routeImpact:"开源 AI 许可证执行力标志性测试案例",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_0900_003",date:"2026-03-21",time:"09:00",grade:"🟡",title:"OpenCode — 开源 AI 编码 Agent",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47460525",domain:"Agent 框架",summary:"推送。Go 实现的多模型终端 AI 编码工具，支持 75+ 模型、ACP 协议、LSP 集成、客户端/服务器架构。Claude Code / Codex 的开源替代品。MIT 许可证",insight:"378pt on HN",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_0900_004",date:"2026-03-21",time:"09:00",grade:"🔴",title:"Cursor Composer 2 = Kimi K2.5 + RL",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47452404",domain:"国产模型",summary:"持续关注。昨日推时仅 13pt/0c，24h 内爆发至 256pt/140c。许可证争议全面爆发：Moonshot 预训练负责人杜育伦公开指控 tokenizer 完全一致，要求署名和付费。Cursor 月收入 $1.67 亿，是许可触发门槛 8 倍。Cursor 至今未回应。开源 AI 许可证执行力的标志性测试案例",insight:"Moonshot 预训练负责人指控 tokenizer 完全一致。Cursor 月收入 $1.67 亿，是许可触发门槛 8 倍",routeImpact:"开源 AI 许可证执行力标志性测试案例",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_0900_005",date:"2026-03-21",time:"09:00",grade:"🔵",title:"Claude Code Channels",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47448524",domain:"其他",summary:"继续升温（昨日 335pt/189c），已覆盖",insight:"391pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260321_0900_006",date:"2026-03-21",time:"09:00",grade:"🔵",title:"Scaling Autoresearch",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47442435",domain:"其他",summary:"稳定，已覆盖",insight:"225pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_1800_000",date:"2026-03-20",time:"18:00",grade:"🔵",title:"Jensen 言论\"年薪 50 万需消耗 25 万 token\"",source:"@rohanpaul_ai",sourceUrl:"https://x.com/rohanpaul_ai/status/2034897805307720083",domain:"AI 基建",summary:"C 级搬运，GTC 旧内容重包装，非新信号。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_1800_001",date:"2026-03-20",time:"18:00",grade:"🔵",title:"Mark Cuban Mac Mini Agent 清垃圾邮件",source:"@rohanpaul_ai",sourceUrl:"https://x.com/rohanpaul_ai/status/2034888759691599891",domain:"其他",summary:"C 级搬运，消费级应用案例与 Alex 方向弱相关。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_1800_002",date:"2026-03-20",time:"18:00",grade:"🔵",title:"OpenClaw vs Claude Code（TG vs SSH/Tmux）",source:"@fankaishuoai",sourceUrl:"https://x.com/fankaishuoai/status/2034903827170959733",domain:"Agent 框架",summary:"产品对比观点级，无技术深度。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_1800_003",date:"2026-03-20",time:"18:00",grade:"🔵",title:"CLI 工具流行趋势（飞书/Readwise/Obsidian 出 CLI）",source:"@jakevin7",sourceUrl:"https://x.com/jakevin7/status/2034932665049379137",domain:"开发者工具",summary:"CLI>MCP 同线但 3/17 已多次覆盖，无新角度。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_1800_004",date:"2026-03-20",time:"18:00",grade:"🔵",title:"Claude Code Channels",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47448524",domain:"其他",summary:"- Claude Code Channels (47448524) 升至 335pt/189c（持续热，已覆盖）",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_1800_005",date:"2026-03-20",time:"18:00",grade:"🟡",title:"Cursor Composer 2 = Kimi K2.5 + RL",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47452404",domain:"Context Engineering",summary:"推送。新上线帖。web_search 补充：Cursor 基于 Kimi K2.5 做 compaction-in-the-loop RL 训练，Terminal-Bench 61.7，SWE-bench Multilingual 73.7，$0.50/M input。Context Engineering（context compaction 内化到 RL 训练循环）重要案例",insight:"Moonshot 预训练负责人指控 tokenizer 完全一致。Cursor 月收入 $1.67 亿，是许可触发门槛 8 倍",routeImpact:"开源 AI 许可证执行力标志性测试案例",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_1500_000",date:"2026-03-20",time:"15:00",grade:"🔵",title:"Claude Code 远程 MCP 插件发布",source:"@op7418",sourceUrl:"https://x.com/op7418/status/2034771704313250096",domain:"开发者工具",summary:"重复（12:00 已推同一信号，同 URL https://x.com/op7418/status/2034771704313250096 ，不同推文 ID 但内容相同）",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_1500_001",date:"2026-03-20",time:"15:00",grade:"🔵",title:"OpenAI 桌面超级应用（ChatGPT+Atlas+Codex 整合）",source:"@rohanpaul_ai",sourceUrl:"https://x.com/rohanpaul_ai/status/2034887533767926040",domain:"Agent 框架",summary:"C 级博主搬运，战略层非技术信号，Alex 当前方向无直接关系。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_1500_002",date:"2026-03-20",time:"15:00",grade:"🔵",title:"Claude Code Channels",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47448524",domain:"其他",summary:"- Claude Code Channels (47448524) 升至 298pt/161c（12:00 报 220pt/120c），持续热度上升",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_1500_003",date:"2026-03-20",time:"15:00",grade:"🔵",title:"Scaling Autoresearch",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47442435",domain:"其他",summary:"- Scaling Autoresearch (47442435) 升至 153pt/69c（稳定）",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_1500_004",date:"2026-03-20",time:"15:00",grade:"🔵",title:"ArXiv 独立于 Cornell",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47450478",domain:"学术研究",summary:"学术基建，与 AI 工程弱相关",insight:"136pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_1500_005",date:"2026-03-20",time:"15:00",grade:"🔵",title:"Canary YC W26 AI QA",source:"HN",sourceUrl:"https://news.ycombinator.com/item?id=47441629",domain:"其他",summary:"太早期",insight:"50pt on HN",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_1200_000",date:"2026-03-20",time:"12:00",grade:"🟡",title:"Claude Code 官方远程 MCP 插件（TG/Discord）",source:"@op7418",sourceUrl:"https://x.com/op7418/status/2034819697858978070",domain:"Context Engineering",summary:"推送。Anthropic 官方开发 Telegram+Discord 插件，手机远程控制 Claude Code session，VentureBeat 评\"OpenClaw killer\"。09:00 Channels 信号的落地补充，T2 Context Engineering 相关。",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_1200_001",date:"2026-03-20",time:"12:00",grade:"🔵",title:"OpenAI 推桌面超级应用对抗 Anthropic",source:"@swyx",sourceUrl:"https://x.com/swyx/status/2034833969204928781",domain:"其他",summary:"战略非技术，降级。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_1200_002",date:"2026-03-20",time:"12:00",grade:"🔵",title:"设计师需访问编码代理",source:"@swyx",sourceUrl:"https://x.com/swyx/status/2034802359470330249",domain:"其他",summary:"观点级实践建议。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_1200_003",date:"2026-03-20",time:"12:00",grade:"🔵",title:"注意力配置机制",source:"@lijigang",sourceUrl:"https://x.com/lijigang/status/2034841188067680588",domain:"其他",summary:"哲学层，与 AI 技术弱相关。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_1200_004",date:"2026-03-20",time:"12:00",grade:"🔵",title:"Claude Opus vs GPT-5.3 Codex",source:"@fankaishuoai",sourceUrl:"https://x.com/fankaishuoai/status/2034816286497325432",domain:"Agent 框架",summary:"个人测评样本不足。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_0900_000",date:"2026-03-20",time:"09:00",grade:"🟡",title:"AI 身份授权推广（Keycard/WorkOS）",source:"@swyx",sourceUrl:"https://x.com/swyx/status/2034790106549428680",domain:"Agent 安全",summary:"Agent 安全同线但产品推广性质，降级跳过。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_0900_001",date:"2026-03-20",time:"09:00",grade:"🔵",title:"LiteParse 开源本地文档解析器",source:"@jerryjliu0",sourceUrl:"https://x.com/jerryjliu0/status/2034790590572060848",domain:"开发者工具",summary:"工具级发布公告，CLI 趋势同线但不够新颖。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_0900_002",date:"2026-03-20",time:"09:00",grade:"🔵",title:"OpenAI 战略分析（ChatGPT→编码→助手）",source:"@petergyang",sourceUrl:"https://x.com/petergyang/status/2034786020160635031",domain:"其他",summary:"B 级博主观点级，泛化分析无新信息。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_0900_003",date:"2026-03-20",time:"09:00",grade:"🔵",title:"MiMo-V2-Pro",source:"@plantegg",sourceUrl:"https://x.com/plantegg/status/2034786863408398721",domain:"国产模型",summary:"重复（3/19 12:00 已推 I004）。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260320_0900_004",date:"2026-03-20",time:"09:00",grade:"🔵",title:"GPT-5 进入后期训练",source:"@wlzh",sourceUrl:"https://x.com/wlzh/status/2034789893269078167",domain:"其他",summary:"信源不明确，@wlzh 非已评级博主，不推。",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260319_0515_000",date:"2026-03-19",time:"05:15",grade:"🔴",title:"Stripe MPP (Machine Payments Protocol)",source:"",sourceUrl:"",domain:"产品生态",summary:"Stripe + Tempo(区块链) + Visa 联合发布 Agent 支付开放协议。HTTP 402 原生响应，Agent 请求付费资源 → 服务端返回支付请求 → Agent 自动授权 → 完成交易。已上线 Browserbase/PostalForm 等商家。稳定币 + 法币双轨。Agentic Commerce 从概念到金融基础设施落地",insight:"HTTP 402 原生响应，Agent 请求付费资源 → 服务端返回支付请求 → Agent 自动授权。稳定币+法币双轨",routeImpact:"Agentic Commerce 从概念到金融基础设施落地，T2 Agent 工程必知",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260319_0515_001",date:"2026-03-19",time:"05:15",grade:"🔴",title:"Snowflake Cortex Code 沙箱逃逸",source:"",sourceUrl:"",domain:"Agent 安全",summary:"PromptArmor 发现：间接 prompt injection 通过 README 触发，process substitution `<()` 绕过命令验证 + 设置 unsandboxed flag 逃出沙箱 + 下载执行恶意代码。50% 复现率。子代理 context loss 导致主代理未发现已执行攻击。已修复(v1.0.25)。Agent 安全攻击面教科书案例",insight:"间接 prompt injection 通过 README 触发，process substitution 绕过命令验证，50% 复现率",routeImpact:"Agent 安全攻击面教科书案例，面试安全话题必备",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260319_0515_002",date:"2026-03-19",time:"05:15",grade:"🟡",title:"\"AI Coding is Gambling\"",source:"",sourceUrl:"",domain:"学术研究",summary:"HN 265pt，与 Jeremy Howard \"dark flow\" 概念呼应。METR 研究：自估快 20% 实际慢 19%。Vibe coding 心理机制 = 赌博（随机奖励 + 即时反馈）。同话题后续（接 3/16-17 Sloppypasta/代码审查瓶颈系列）",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260319_0515_003",date:"2026-03-19",time:"05:15",grade:"🟡",title:"GTC Day 3 开放模型面板 recap",source:"",sourceUrl:"",domain:"Agent 框架",summary:"6 CEO + Jensen 主持。Nemotron Coalition 扩展为 6 个模型家族。Harrison Chase: \"best agent harness for Nemotron\"。Mira Murati: Tinker 平台 + Coalition 民主化前沿 AI。Arthur Mensch: \"open frontier models = AI becomes a true platform\"。同话题后续（接 3/17 Nemotron 首个项目确认）",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260319_0515_004",date:"2026-03-19",time:"05:15",grade:"🟡",title:"NanoClaw + Docker Sandboxes",source:"",sourceUrl:"",domain:"Agent 安全",summary:"Gavriel Cohen 一个周末基于 Apple 容器技术构建的 OpenClaw 安全替代方案。22K⭐/4.6K forks。Docker MicroVM 隔离（\"真正的进程监狱\"）。15 个核心源文件，代码量比 OpenClaw 少 100x。创建 NanoCo 公司全职投入。Agent 安全沙箱成独立品类",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260318_2300_000",date:"2026-03-18",time:"23:00",grade:"🔴",title:"Hunter Alpha 1T 参数神秘模型",source:"",sourceUrl:"",domain:"国产模型",summary:"OpenRouter 匿名上线，疑 DeepSeek V4/GLM-6，1M token context，免费，agentic 场景优化，160B+ tokens 已处理。Agent 模型竞争新变量",insight:"OpenRouter 匿名上线，疑 DeepSeek V4/GLM-6，1M token context，免费",routeImpact:"Agent 模型竞争新变量",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260318_2300_001",date:"2026-03-18",time:"23:00",grade:"🟡",title:"Meta 20% 裁员（15000+ 人）+ LeCun 离职余波",source:"",sourceUrl:"",domain:"产品生态",summary:"AI pivot 裁员换投资（capex $135B），FAIR 缩编，LeCun 已走，Alexandr Wang 主导闭源转向。就业市场信号",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260318_2300_002",date:"2026-03-18",time:"23:00",grade:"🟡",title:"Yann LeCun：AI 安全需世界模型",source:"",sourceUrl:"",domain:"Agent 安全",summary:"离开 Meta 后首次系统阐述安全观：危险不在智能本身而在缺乏后果预测能力，世界模型 + 安全护栏 = 解法。同话题后续（AMI Labs $3.5B）",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260318_2300_003",date:"2026-03-18",time:"23:00",grade:"🟡",title:"simonw 关注 Qwen 3.5 团队危机",source:"",sourceUrl:"",domain:"国产模型",summary:"4B 参数媲美 GPT-4o，但核心团队集体离职。同话题后续（3/15 已推 Qwen 时代结束）",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260318_2130_000",date:"2026-03-18",time:"21:30",grade:"🟡",title:"ThoughtWorks \"Where Does Engineering Go\" Retreat Findings",source:"",sourceUrl:"",domain:"产品生态",summary:"HN 热议，讨论 AI 时代工程师角色转变（从写代码到产品决策）， 与 Alex 背景高度相关",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260318_1900_000",date:"2026-03-18",time:"19:00",grade:"🟡",title:"Nemotron Coalition 首个项目确认",source:"",sourceUrl:"",domain:"AI 基建",summary:"Mistral × Nvidia 联合训练 base model（DGX Cloud），开源，成为 Nemotron 4 基座。同话题后续发展（GTC 面板）",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260318_1900_001",date:"2026-03-18",time:"19:00",grade:"🟡",title:"Godogen (Claude Code Skills → Godot 游戏)",source:"",sourceUrl:"",domain:"开发者工具",summary:"HN 241pt/145c，Skills 工程极致用例（双 skill 编排：规划→生成→截图验证→修复循环）。同话题后续（Anthropic Skills 2.0）",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260318_1900_002",date:"2026-03-18",time:"19:00",grade:"🔵",title:"Dell 裁员 11000",source:"",sourceUrl:"",domain:"产品生态",summary:"AI pivot 就业信号，科技行业 60+ 公司裁 38000+ 人",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260318_1230_000",date:"2026-03-18",time:"12:30",grade:"🔴",title:"Hermes Agent (NousResearch)",source:"",sourceUrl:"",domain:"Agent 框架",summary:"OpenClaw 直接竞品，v0.2.0 (3/12)，闭环自学习 Agent 平台",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260318_1230_001",date:"2026-03-18",time:"12:30",grade:"🟡",title:"61 AI Agents / The Agency (msitarzewski)",source:"",sourceUrl:"",domain:"其他",summary:"10K⭐ 首周，结构化 Agent 角色",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260318_1100_000",date:"2026-03-18",time:"11:00",grade:"🔴",title:"GPT-5.4 Mini/Nano",source:"",sourceUrl:"",domain:"其他",summary:"OpenAI 分层 Agent 架构：Mini 54.4% SWE-Bench Pro（接近旗舰 57.7%），Nano $0.20/M 专为子代理。大模型规划+小模型执行成本模型",insight:"Mini 54.4% SWE-Bench Pro（接近旗舰 57.7%），Nano $0.20/M 专为子代理",routeImpact:"大模型规划+小模型执行成本模型，直接影响多 Agent 架构设计",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260318_1100_001",date:"2026-03-18",time:"11:00",grade:"🟡",title:"Mistral Forge",source:"",sourceUrl:"",domain:"AI 基建",summary:"企业自定义模型训练平台，GTC 发布，Agent-first 设计，ASML/ESA 等客户",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260318_1100_002",date:"2026-03-18",time:"11:00",grade:"🟡",title:"GSD (Get Shit Done)",source:"",sourceUrl:"",domain:"Context Engineering",summary:"HN 211pt，Context Engineering + Spec-Driven Development，解决 context rot，外化状态+fresh context。ThoughtWorks SDD 同线",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260318_1100_003",date:"2026-03-18",time:"11:00",grade:"🟡",title:"Anthropic Skills 指南",source:"",sourceUrl:"",domain:"Agent 框架",summary:"Skills 2.0 框架，17 个官方技能，progressive disclosure，跨 Claude Code/Cursor/Codex 兼容",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_2100_000",date:"2026-03-17",time:"21:00",grade:"🟡",title:"SaaS 恐惧 AI Agent（SEC Filing 悖论）",source:"",sourceUrl:"",domain:"产品生态",summary:"Figma/HubSpot SEC 备案将 AI Agent 列为\"重大风险\"，但 CEO 公开淡化。The Information 深度报道，$1T 企业软件市值一周蒸发（1/29 SAP-16%/ServiceNow-11%）。AI Agent 工程师价值信号。",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1900_000",date:"2026-03-17",time:"19:00",grade:"🔴",title:"Codex Subagents GA",source:"",sourceUrl:"",domain:"Agent 框架",summary:"3/16 GA，多窗口子代理、自定义 agent TOML、cross-thread approval。Multi-agent 从理论到产品落地（与昨天 simonw Sub-agents 章节对齐）",insight:"多窗口子代理、自定义 agent TOML、cross-thread approval",routeImpact:"Multi-agent 从理论到产品落地",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1900_001",date:"2026-03-17",time:"19:00",grade:"🔴",title:"GLM-5-Turbo",source:"",sourceUrl:"",domain:"国产模型",summary:"智谱专为 Agent 场景训练，744B MoE/40B 激活，tool call 3x 效率，$0.96/M input（GPT-5.4 的 1/8），国产 Agent 模型新标杆",insight:"744B MoE/40B 激活，tool call 3x 效率，$0.96/M input（GPT-5.4 的 1/8）",routeImpact:"国产 Agent 模型新标杆，面试国产模型话题",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1900_002",date:"2026-03-17",time:"19:00",grade:"🟡",title:"LangSmith CLI + @dotey CLI 重写",source:"@dotey",sourceUrl:"",domain:"开发者工具",summary:"Agent-native CLI 趋势持续：Harrison Chase 推 langsmith-cli（自然语言查 traces），@dotey 在中文圈传播 \"CLI 就是 Agent 文档\" 观点。CLI > MCP 共识扩大",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1900_003",date:"2026-03-17",time:"19:00",grade:"🟡",title:"代码审查瓶颈转移",source:"@OfficialLoganK",sourceUrl:"",domain:"Agent 框架",summary:"@OfficialLoganK \"瓶颈从生成转向审查\"，与 Sloppypasta/ADR/Cursor 质量研究 同线",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1830_000",date:"2026-03-17",time:"18:30",grade:"🟡",title:"GTC 3/18 面板预习简报完整版完成",source:"",sourceUrl:"",domain:"AI 基建",summary:"6 位 panelist 全部覆盖",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1700_000",date:"2026-03-17",time:"17:00",grade:"🟡",title:"Mistral Small 4",source:"",sourceUrl:"",domain:"AI 基建",summary:"128 专家 MoE，119B 参数/6B 激活，Apache 2.0，统一 4 模型，可配置推理深度。GTC 期间 Nemotron Coalition 成员同步发布。",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1700_001",date:"2026-03-17",time:"17:00",grade:"🟡",title:"SkillRL",source:"",sourceUrl:"",domain:"Agent 框架",summary:"递归技能进化框架，7B 模型超 GPT-4o 41.9%。SkillBank 层级技能库 + 经验蒸馏。与 OpenClaw skills 概念吻合。",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1700_002",date:"2026-03-17",time:"17:00",grade:"🟡",title:"Cursor 质量研究",source:"",sourceUrl:"",domain:"Agent 框架",summary:"HN 109pt，807 项目实证：短期速度提升但长期复杂度持续增加。QA 必须跟上 AI 速度。同话题后续发展（接 3/16 Sloppypasta + ADR 工作流）",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1530_000",date:"2026-03-17",time:"15:30",grade:"🟡",title:"GTC 3/18 面板预习简报完成",source:"",sourceUrl:"",domain:"Agent 框架",summary:"5 位 panelist 深度档案（Harrison Chase/Mira Murati/AI2/Cursor/a16z）",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1500_000",date:"2026-03-17",time:"15:00",grade:"🟡",title:"simonw Sub-agents 章节",source:"",sourceUrl:"",domain:"其他",summary:"Agentic Engineering Patterns 指南最新章节（子代理模式），同话题后续发展",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1430_000",date:"2026-03-17",time:"14:30",grade:"🟡",title:"Dynamo 1.0",source:"",sourceUrl:"",domain:"国产模型",summary:"Nvidia 开源推理调度 OS（\"AI Factory Operating System\"），7x Blackwell 性能 / 30x token/GPU（DeepSeek-R1 基准）",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1330_000",date:"2026-03-17",time:"13:30",grade:"🟡",title:"MCP-Universe (Salesforce AI Research)",source:"",sourceUrl:"",domain:"Agent 框架",summary:"首个全面 MCP Agent 基准，6 域/11 server/231 tasks，GPT-5 仅 44%，Cursor/Claude Code 不如 ReAct",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1330_001",date:"2026-03-17",time:"13:30",grade:"🟡",title:"Cloudflare Code Mode",source:"",sourceUrl:"",domain:"Agent 安全",summary:"2 tools (~1000 token) 替代 2500+ 端点，81% token 削减，TypeScript SDK + V8 沙箱执行",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1130_000",date:"2026-03-17",time:"11:30",grade:"🟡",title:"ICMS (Inference Context Memory Storage)",source:"",sourceUrl:"",domain:"Agent Memory",summary:"Vera Rubin 新推理上下文存储层，解决 multi-agent KV cache",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1130_001",date:"2026-03-17",time:"11:30",grade:"🟡",title:"Nemotron 4 Coalition",source:"",sourceUrl:"",domain:"Agent 框架",summary:"Nvidia 联合 Cursor/Perplexity/Mistral/Black Forest Labs 共建",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1130_002",date:"2026-03-17",time:"11:30",grade:"🟡",title:"Build-a-Claw",source:"",sourceUrl:"",domain:"Agent 框架",summary:"GTC 现场 OpenClaw 搭建体验，DGX Spark 现场售卖",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1100_000",date:"2026-03-17",time:"11:00",grade:"🟡",title:"Context Hub (Andrew Ng, 6K⭐)",source:"",sourceUrl:"",domain:"Context Engineering",summary:"CLI-first 的 Agent 文档注册中心，解决 API 幻觉问题。与 MCP context window 危机话题同线（CLI > MCP 趋势的又一证据）",insight:"",routeImpact:"",status:"pushed",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1030_000",date:"2026-03-17",time:"10:30",grade:"🟡",title:"Nvidia 收购 Groq → Groq 3 LPU",source:"",sourceUrl:"",domain:"产品生态",summary:"$200 亿资产收购，首款 LPU 芯片",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1030_001",date:"2026-03-17",time:"10:30",grade:"🟡",title:"$1T 订单预测",source:"",sourceUrl:"",domain:"AI 基建",summary:"Jensen 从 $500B 翻倍到 $1T（Blackwell + Vera Rubin 到 2027）",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1030_002",date:"2026-03-17",time:"10:30",grade:"🟡",title:"Jensen 点名 OpenClaw",source:"",sourceUrl:"",domain:"Agent 框架",summary:"\"most popular open source project in the history of humanity\"",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1030_003",date:"2026-03-17",time:"10:30",grade:"🟡",title:"Feynman 架构",source:"",sourceUrl:"",domain:"其他",summary:"下一代 Rosa CPU + LP40 LPU，2028 年",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260317_1030_004",date:"2026-03-17",time:"10:30",grade:"🟡",title:"3/18 开放模型论坛",source:"",sourceUrl:"",domain:"Agent 框架",summary:"Jensen 主持，Cursor/LangChain/Mistral 参与",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260316_2300_000",date:"2026-03-16",time:"23:00",grade:"🟡",title:"GTC 2026 今天开幕（3/16-19 圣何塞），Jensen Huang 主题演讲，Nvidia 新架构预告",source:"",sourceUrl:"",domain:"AI 基建",summary:"",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260316_1830_000",date:"2026-03-16",time:"18:30",grade:"🟡",title:"36Kr 速报：中国 AI 大模型调用量超美国、DeepSeek V4 延迟、Jeremy Howard 炮轰 Claude Code 路线",source:"",sourceUrl:"",domain:"国产模型",summary:"",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260316_1830_001",date:"2026-03-16",time:"18:30",grade:"🔵",title:"315 曝光 GEO/AI \"投毒\"黑产",source:"",sourceUrl:"",domain:"其他",summary:"",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+  {id:"ps_20260316_1700_000",date:"2026-03-16",time:"17:00",grade:"🔵",title:"ASML EUV 光刻机 AI 算力瓶颈",source:"",sourceUrl:"",domain:"其他",summary:"",insight:"",routeImpact:"",status:"skipped",pushCount:1,alexStatus:"unread"},
+];
+
+// ─── State ──────────────────────────────────────────────────────────────────
+const SK = 'pulse_v1';
+let S = JSON.parse(localStorage.getItem(SK)||'{}');
+const getS = id => (S[id]||{alexStatus:'unread'}).alexStatus;
+const setS = (id,st) => { S[id]={alexStatus:st}; localStorage.setItem(SK,JSON.stringify(S)); };
+
+// Initialize state from data alexStatus
+DATA.forEach(d => {
+  if (!S[d.id] && d.alexStatus !== 'unread') {
+    S[d.id] = { alexStatus: d.alexStatus };
+  }
+});
+localStorage.setItem(SK, JSON.stringify(S));
+
+// ─── Filter ─────────────────────────────────────────────────────────────────
+let curFilter = 'all', curDomain = '', curQ = '';
+const gradeKey = g => g==='🔴'?'red':g==='🟡'?'yellow':'blue';
+
+function matches(d) {
+  const st = getS(d.id);
+  const gk = gradeKey(d.grade);
+  if (curFilter==='unread' && st!=='unread') return false;
+  if (curFilter==='watching' && st!=='watching') return false;
+  if (curFilter==='discussed' && st!=='discussed') return false;
+  if (curFilter==='dismissed' && st!=='dismissed') return false;
+  if (curFilter==='confirmed' && st!=='confirmed') return false;
+  if (curFilter==='red' && gk!=='red') return false;
+  if (curFilter==='yellow' && gk!=='yellow') return false;
+  if (curFilter==='skipped' && d.status!=='skipped') return false;
+  if (curDomain && d.domain!==curDomain) return false;
+  if (curQ) {
+    const hay = (d.title+' '+d.summary+' '+(d.insight||'')+' '+(d.source||'')+' '+(d.domain||'')).toLowerCase();
+    if (!hay.includes(curQ.toLowerCase())) return false;
+  }
+  return true;
+}
+
+// ─── Domain chips ───────────────────────────────────────────────────────────
+function buildDomainChips() {
+  const domains = [...new Set(DATA.map(d=>d.domain))].filter(Boolean).sort();
+  const container = document.getElementById('domainChips');
+  container.innerHTML = domains.map(d =>
+    `<button class="domain-chip" data-domain="${d}">${d}</button>`
+  ).join('');
+  container.querySelectorAll('[data-domain]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const active = btn.classList.contains('active');
+      container.querySelectorAll('.domain-chip').forEach(b=>b.classList.remove('active'));
+      if (!active) { btn.classList.add('active'); curDomain = btn.dataset.domain; }
+      else { curDomain = ''; }
+      render();
+    });
+  });
+}
+
+// ─── Render ─────────────────────────────────────────────────────────────────
+function render() {
+  updateStats();
+  const wrap = document.getElementById('gridWrap');
+  const filtered = DATA.filter(matches);
+  document.getElementById('sShown').textContent = filtered.length;
+
+  if (!filtered.length) {
+    wrap.innerHTML = '<div class="empty">没有符合条件的条目</div>';
+    return;
+  }
+
+  // Group by date, then by time within date
+  const byDate = {};
+  filtered.forEach(d => { (byDate[d.date]||(byDate[d.date]=[])).push(d); });
+  const dates = Object.keys(byDate).sort((a,b)=>b.localeCompare(a));
+
+  const today = new Date().toISOString().slice(0,10);
+  const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+
+  wrap.innerHTML = dates.map(date => {
+    const dateItems = byDate[date];
+    const dayLabel = date===today ? '今天' : date===yesterday ? '昨天' : '';
+    const fmtDate = `${date.slice(0,4)}年${parseInt(date.slice(5,7))}月${parseInt(date.slice(8,10))}日`;
+    const label = dayLabel ? `${dayLabel} · ${fmtDate}` : fmtDate;
+
+    // Group by time within date
+    const byTime = {};
+    dateItems.forEach(d => { (byTime[d.time]||(byTime[d.time]=[])).push(d); });
+    const times = Object.keys(byTime).sort((a,b)=>b.localeCompare(a));
+
+    const timeBlocks = times.map(time => {
+      return `<div class="time-label">${time} 采集</div>
+        <div class="grid">${byTime[time].map(cardHTML).join('')}</div>`;
+    }).join('');
+
+    return `<div class="date-label">${label}</div>${timeBlocks}`;
+  }).join('');
+
+  bindEvents(wrap);
+}
+
+function cardHTML(d) {
+  const st = getS(d.id);
+  const gk = gradeKey(d.grade);
+  const gradeLabel = gk==='red'?'🔴 路线级':gk==='yellow'?'🟡 值得了解':'🔵 参考';
+  const stCls = st==='watching'?' st-watching':st==='discussed'?' st-discussed':st==='dismissed'?' st-dismissed':st==='confirmed'?' st-confirmed':'';
+  const pushCountBadge = d.pushCount > 1 ? `<span class="push-count">[×${d.pushCount}]</span>` : '';
+  const statusBadge = `<span class="status-badge ${d.status}">${d.status==='pushed'?'已推送':'已跳过'}</span>`;
+  const hasDetail = d.insight || d.routeImpact;
+
+  // Source link
+  let sourceHtml = '';
+  if (d.source) {
+    if (d.sourceUrl) {
+      sourceHtml = `<div class="card-source">来源：<a href="${d.sourceUrl}" target="_blank" rel="noopener">${d.source}</a></div>`;
+    } else {
+      sourceHtml = `<div class="card-source">来源：${d.source}</div>`;
+    }
+  }
+
+  return `
+<div class="card grade-${gk}${stCls}" id="card-${d.id}">
+  <div class="card-body">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px">
+      <div style="display:flex;align-items:center">
+        <div class="grade-badge ${gk}">${gradeLabel}</div>
+        ${pushCountBadge}
+        ${statusBadge}
+      </div>
+      <span style="font-size:11px;color:#484f58">${d.time}</span>
+    </div>
+    <a class="card-title" href="${d.sourceUrl||'#'}" target="_blank" rel="noopener">${d.title}</a>
+    <div class="card-summary">${d.summary}</div>
+    ${d.domain ? `<span class="card-domain">${d.domain}</span>` : ''}
+    ${sourceHtml}
+    ${hasDetail ? `<button class="card-expand-toggle" data-expand="${d.id}">
+      <span class="expand-arrow">▶</span>
+      <span class="expand-label">深度分析</span>
+    </button>` : ''}
+  </div>
+  ${hasDetail ? `<div class="card-detail" id="detail-${d.id}">
+    ${d.insight ? `<div class="detail-section"><div class="detail-label">核心观点</div>${d.insight}</div>` : ''}
+    ${d.routeImpact ? `<div class="detail-section"><div class="detail-label">路线影响</div>${d.routeImpact}</div>` : ''}
+  </div>` : ''}
+  <div class="card-actions">
+    <button class="action-btn${st==='watching'?' on-watch':''}" data-act="watching" data-id="${d.id}">👀 关注</button>
+    <button class="action-btn${st==='discussed'?' on-discuss':''}" data-act="discussed" data-id="${d.id}">💬 讨论</button>
+    <button class="action-btn${st==='confirmed'?' on-confirm':''}" data-act="confirmed" data-id="${d.id}">✓ 确认</button>
+    <button class="action-btn${st==='dismissed'?' on-dismiss':''}" data-act="dismissed" data-id="${d.id}">✕ 忽略</button>
+    ${d.sourceUrl ? `<a class="card-link" href="${d.sourceUrl}" target="_blank" rel="noopener">打开 ↗</a>` : ''}
+  </div>
+</div>`;
+}
+
+function bindEvents(wrap) {
+  wrap.querySelectorAll('[data-act]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const {id, act} = btn.dataset;
+      setS(id, getS(id)===act ? 'unread' : act);
+      render();
+    });
+  });
+  wrap.querySelectorAll('[data-expand]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.expand;
+      const detail = document.getElementById('detail-'+id);
+      const arrow = btn.querySelector('.expand-arrow');
+      detail.classList.toggle('open');
+      arrow.classList.toggle('open');
+      btn.querySelector('.expand-label').textContent = detail.classList.contains('open') ? '收起' : '深度分析';
+    });
+  });
+}
+
+function updateStats() {
+  const total = DATA.length;
+  document.getElementById('sTot').textContent = total;
+  document.getElementById('sRed').textContent = DATA.filter(d=>d.grade==='🔴').length;
+  document.getElementById('sYellow').textContent = DATA.filter(d=>d.grade==='🟡').length;
+  document.getElementById('sSkipped').textContent = DATA.filter(d=>d.status==='skipped').length;
+  document.getElementById('sConfirmed').textContent = DATA.filter(d=>getS(d.id)==='confirmed').length;
+  document.getElementById('metaText').textContent = '最后同步：2026-03-23 13:20';
+}
+
+// ─── Events ─────────────────────────────────────────────────────────────────
+document.querySelectorAll('[data-f]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-f]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    curFilter = btn.dataset.f;
+    render();
+  });
+});
+document.getElementById('searchInput').addEventListener('input', e => {
+  curQ = e.target.value;
+  render();
+});
+
+buildDomainChips();
+render();
+</script>
+</body>
+</html>
