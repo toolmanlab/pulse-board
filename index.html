@@ -823,6 +823,9 @@ const DATA = [
   {"date":"2026-03-25","time":"15:00","grade":"🟡","title":"Anthropic多代理Harness架构","source":"@frxiaobei","sourceUrl":"https://x.com/frxiaobei/status/2036667207342809181","domain":"context-engineering","summary":"Anthropic工程博客介绍多代理Harness架构，灵感来自GAN，Planner+Generator+Evaluator三代理。用于推动Claude在前端设计和长时自主软件工程中的能力。","status":"pushed","routeImpact":"T2 Context Engineering 同行实践参考","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260325_1500_000","shortId":"P213"},
   {"date":"2026-03-25","time":"18:00","grade":"🔵","title":"OpenCLI 1.4.0 反风控+安全加固","source":"@jakevin7","sourceUrl":"https://x.com/jakevin7/status/2036693257208713536","domain":"tools","summary":"OpenCLI 1.4.0 发布，Pipeline 引擎+反风控+Chrome Extension 安全加固","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260325_1800_000","shortId":"P214"},
   {"date":"2026-03-25","time":"18:00","grade":"🔵","title":"Claude Code + Youmind Skill CLI/GUI 协同","source":"@PMbackttfuture","sourceUrl":"https://x.com/PMbackttfuture/status/2036644504200266204","domain":"tools","summary":"Claude Code 调用 Youmind Skill 实现 CLI+GUI 协同生成 PPT","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260325_1800_001","shortId":"P215"},
+  {"date":"2026-03-25","time":"18:00","grade":"🔵","title":"PM职位需求激增","source":"@petergyang","sourceUrl":"https://x.com/petergyang/status/2036619846386135526","domain":"行业趋势","summary":"全球科技公司PM职位空缺超7300个，比2023年初高点高75%","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260325_1800_000","shortId":"P216"},
+  {"date":"2026-03-25","time":"18:00","grade":"🔵","title":"OpenClaw社区管理挑战","source":"@steipete","sourceUrl":"https://x.com/steipete/status/2036736713209626783","domain":"社区运营","summary":"ClawHub社区管理规模化问题讨论","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260325_1800_001","shortId":"P217"},
+  {"date":"2026-03-25","time":"18:00","grade":"🟡","title":"Harness Engineering观点","source":"@plantegg","sourceUrl":"https://x.com/plantegg/status/2036714827586896023","domain":"Agent工程","summary":"Codex提出工程师角色重定义：设计环境、明确意图、构建反馈回路，而非编写代码","status":"pushed","routeImpact":"T2 Context Engineering 同行实践参考","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260325_1800_002","shortId":"P218"},
 ];
 
 // ─── State ──────────────────────────────────────────────────────────────────
@@ -1066,7 +1069,7 @@ function updateStats() {
   document.getElementById('sYellow').textContent = DATA.filter(d=>d.grade==='🟡').length;
   document.getElementById('sSkipped').textContent = DATA.filter(d=>d.status==='skipped').length;
   document.getElementById('sConfirmed').textContent = DATA.filter(d=>getS(d.id)==='confirmed').length;
-  document.getElementById('metaText').textContent = '最后同步：2026-03-25 15:14';
+  document.getElementById('metaText').textContent = '最后同步：2026-03-25 18:07';
 }
 
 // ─── Events ─────────────────────────────────────────────────────────────────
