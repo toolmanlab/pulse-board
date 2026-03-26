@@ -841,6 +841,8 @@ const DATA = [
   {"date":"2026-03-25","time":"18:30","grade":"🔵","title":"AI-Generated Code Is Not Reproducible Yet","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2512.22387","domain":"Coding Agent","summary":"代码 Agent 可复现性，主题偏研究","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260325_1830_012","shortId":"P231"},
   {"date":"2026-03-25","time":"18:30","grade":"🔵","title":"Metaphor-based Jailbreak Attacks on Text-to-Image Models","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2512.10766","domain":"Security","summary":"越狱攻击，优化方法为图像领域","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260325_1830_013","shortId":"P232"},
   {"date":"2026-03-25","time":"18:30","grade":"🔵","title":"Think Before You Drive: World Model-Inspired Multimodal Grounding for Autonomous Vehicles","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2512.03454","domain":"AV","summary":"自动驾驶多代理，特定垂直场景","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260325_1830_014","shortId":"P233"},
+  {"date":"2026-03-26","time":"09:00","grade":"🔵","title":"LiteParse 文档解析器发布","source":"@jerryjliu0","sourceUrl":"https://x.com/jerryjliu0/status/2036960731871277353","domain":"tools","summary":"开源无模型文档解析器，集成40+编码代理","status":"skipped","routeImpact":"","pushCount":1,"alexStatus":"unread","insight":"","id":"ps_20260326_0900_000","shortId":"P234"},
+  {"date":"2026-03-26","time":"09:00","grade":"🔵","title":"Claude Code iMessage 插件","source":"@trq212","sourceUrl":"https://x.com/trq212/status/2036959638646866021","domain":"openclaw","summary":"Claude Code iMessage 通道插件发布","status":"skipped","routeImpact":"","pushCount":1,"alexStatus":"unread","insight":"","id":"ps_20260326_0900_001","shortId":"P235"},
 ];
 
 // ─── State ──────────────────────────────────────────────────────────────────
@@ -1084,7 +1086,7 @@ function updateStats() {
   document.getElementById('sYellow').textContent = DATA.filter(d=>d.grade==='🟡').length;
   document.getElementById('sSkipped').textContent = DATA.filter(d=>d.status==='skipped').length;
   document.getElementById('sConfirmed').textContent = DATA.filter(d=>getS(d.id)==='confirmed').length;
-  document.getElementById('metaText').textContent = '最后同步：2026-03-25 18:36';
+  document.getElementById('metaText').textContent = '最后同步：2026-03-26 09:04';
 }
 
 // ─── Events ─────────────────────────────────────────────────────────────────
