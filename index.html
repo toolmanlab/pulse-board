@@ -919,6 +919,7 @@ const DATA = [
   {"date":"2026-03-27","time":"18:30","grade":"🔵","title":"To Write or to Automate Linguistic Prompts (Prompt Optimization vs Expert)","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2603.25169","domain":"Prompt Optimization","summary":"自动prompt优化vs手工prompt比较，语言学任务场景，不改变Alex学什么","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260327_1830_006","shortId":"P309"},
   {"date":"2026-03-27","time":"18:30","grade":"🔵","title":"KV Cache Optimization Strategies for Scalable LLM Inference","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2603.20397","domain":"Long Context","summary":"KV cache优化综述，系统层偏底层研究","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260327_1830_007","shortId":"P310"},
   {"date":"2026-03-27","time":"18:30","grade":"🔵","title":"Formal Semantics for Agentic Tool Protocols: A Process Calculus Approach","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2603.24747","domain":"MCP","summary":"MCP形式化验证，process calculus理论，学术偏向","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260327_1830_008","shortId":"P311"},
+  {"date":"2026-03-27","time":"18:50","grade":"🟡","title":"Rethinking Failure Attribution in Multi-Agent Systems: A Multi-Perspective Benchmark and Evaluation","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2603.25001","domain":"Multi-Agent/Debugging","summary":"MAS 故障归因通常假设单一根因，实际往往多因并存 — 提出多视角 benchmark 改进诊断","status":"pushed","routeImpact":"LangGraph 多 agent 调试实战知识，训练营 debug 环节直接用得上","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260327_1850_000","shortId":"P312"},
 ];
 
 // ─── State ──────────────────────────────────────────────────────────────────
@@ -1162,7 +1163,7 @@ function updateStats() {
   document.getElementById('sYellow').textContent = DATA.filter(d=>d.grade==='🟡').length;
   document.getElementById('sSkipped').textContent = DATA.filter(d=>d.status==='skipped').length;
   document.getElementById('sConfirmed').textContent = DATA.filter(d=>getS(d.id)==='confirmed').length;
-  document.getElementById('metaText').textContent = '最后同步：2026-03-27 18:31';
+  document.getElementById('metaText').textContent = '最后同步：2026-03-27 18:51';
 }
 
 // ─── Events ─────────────────────────────────────────────────────────────────
