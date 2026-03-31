@@ -1033,6 +1033,9 @@ const DATA = [
   {"date":"2026-03-31","time":"15:15","grade":"🔵","title":"Claude Code Computer Use正式开放（Pro/Max via MCP）","source":"@op7418","sourceUrl":"https://x.com/op7418/status/2038816552183808128","domain":"工具","summary":"Claude Code接入Computer Use，验证UI/点击测试/SwiftUI，工具功能更新","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260331_1515_001","shortId":"P423"},
   {"date":"2026-03-31","time":"15:15","grade":"🔵","title":"Qwen3.6 Plus预览版上线OpenRouter（百万上下文，62tps，免费）","source":"@karminski3","sourceUrl":"https://x.com/karminski3/status/2038790709864784005","domain":"国产模型","summary":"阿里Qwen3.6 Plus公测，百万上下文，API速度62tps，目前免费","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260331_1515_002","shortId":"P424"},
   {"date":"2026-03-31","time":"15:15","grade":"🔵","title":"HN: Ollama MLX Apple Silicon加速（161pt）","source":"HN","sourceUrl":"https://news.ycombinator.com/item?id=47582482","domain":"工具","summary":"Ollama采用MLX后端加速Apple Silicon推理，工具级更新","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260331_1515_003","shortId":"P425"},
+  {"date":"2026-03-31","time":"18:15","grade":"🟡","title":"Axios供应链攻击[第3次] + Devin Review提前45分钟预警","source":"@swyx","sourceUrl":"https://x.com/swyx/status/2038903470212968830","domain":"AI安全","summary":"Cognition Devin Review在axios攻击公开前45分钟通知客户，AI agent主动防御供应链攻击首次实证。五源交叉验证（@swyx+@simonw+@karpathy+@_justineo+HN 825pt）","status":"pushed","routeImpact":"AI安全赛道：AI agent作为安全防御工具的真实案例，面试可谈","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260331_1815_000","shortId":"P426"},
+  {"date":"2026-03-31","time":"18:15","grade":"🔵","title":"Claude Code源代码通过NPM map文件泄露","source":"@axiaisacat","sourceUrl":"https://x.com/axiaisacat/status/2038917810395418770","domain":"工具事件","summary":"Claude Code TypeScript源码含命令和UI组件，无构建配置和Git历史。多账号交叉报道（axiaisacat/Jason23818126/zstmfhy/wangray/xiangxiang103），HN 41+125pt","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260331_1815_001","shortId":"P427"},
+  {"date":"2026-03-31","time":"18:15","grade":"🔵","title":"微软Copilot取消PR广告","source":"HN","sourceUrl":"https://news.ycombinator.com/item?id=47582984","domain":"产品事件","summary":"GitHub因用户强烈反弹撤回Copilot PR广告功能，HN 233pt","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260331_1815_002","shortId":"P428"},
 ];
 
 // ─── State ──────────────────────────────────────────────────────────────────
@@ -1276,7 +1279,7 @@ function updateStats() {
   document.getElementById('sYellow').textContent = DATA.filter(d=>d.grade==='🟡').length;
   document.getElementById('sSkipped').textContent = DATA.filter(d=>d.status==='skipped').length;
   document.getElementById('sConfirmed').textContent = DATA.filter(d=>getS(d.id)==='confirmed').length;
-  document.getElementById('metaText').textContent = '最后同步：2026-03-31 15:18';
+  document.getElementById('metaText').textContent = '最后同步：2026-03-31 18:19';
 }
 
 // ─── Events ─────────────────────────────────────────────────────────────────
