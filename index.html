@@ -1042,6 +1042,10 @@ const DATA = [
   {"date":"2026-03-31","time":"18:50","grade":"🟡","title":"Kill-Chain Canaries: Stage-Level Tracking of Prompt Injection Across Attack Surfaces","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2603.28013","domain":"AI Security","summary":"对5个frontier LLM agent进行prompt injection分阶段定位分析，canary追踪防御激活点","status":"pushed","routeImpact":"AI安全赛道：实证哪个pipeline阶段防御失效，对Agent安全架构设计有直接参考价值","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260331_1850_003","shortId":"P432"},
   {"date":"2026-03-31","time":"18:50","grade":"🟡","title":"On the Impact of AGENTS.md Files on the Efficiency of AI Coding Agents","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2601.20404","domain":"Coding Agent","summary":"实证研究AGENTS.md配置文件对Codex/Claude Code效率的影响，Alex当前工作流直接相关","status":"pushed","routeImpact":"Coding Agent + Context Engineering交叉：repository-level context配置对agent效率的量化","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260331_1850_004","shortId":"P433"},
   {"date":"2026-03-31","time":"18:50","grade":"🟡","title":"Safer Builders, Risky Maintainers: Breaking Changes in Human vs Agentic PRs","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2603.27524","domain":"Coding Agent","summary":"GitHub开源仓库实证：AI coding agent创建PR更安全但维护PR引入更多破坏性变更","status":"pushed","routeImpact":"Coding Agent实证，帮助理解AI agent在实际工程中的边界，面试谈AI辅助开发必备","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260331_1850_005","shortId":"P434"},
+  {"date":"2026-03-31","time":"21:15","grade":"🟡","title":"MiniMax M2.7 Agent自优化架构：100+轮自优化，9金牌无需重训练","source":"@akshay_pachaar","sourceUrl":"https://x.com/akshay_pachaar/status/2038966501282332875","domain":"Agent Architecture","summary":"MiniMax M2.7能自主优化代理框架技能/记忆/工作流，100+轮循环，MLE Bench Lite 9金牌，Agent自进化范式新里程碑","status":"pushed","routeImpact":"Agent自进化架构信号：执行→自主设计的范式转变，与国产模型I004相关","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260331_2115_000","shortId":"P435"},
+  {"date":"2026-03-31","time":"21:15","grade":"🟡","title":"Axios供应链攻击[第4次] — 六源验证，1146pt，中文社区3%执行率确认","source":"@AYi_AInotes+HN","sourceUrl":"https://x.com/AYi_AInotes/status/2038948251177807888","domain":"AI Security","summary":"Axios供应链攻击六源交叉验证：@simonw+@karpathy+@swyx+@_justineo+@AYi_AInotes+HN 1146pt，3%环境已执行恶意代码","status":"pushed","routeImpact":"AI安全赛道实证：Agent项目依赖链供应链攻击序列（litellm→axios），面试必备","insight":"I012","pushCount":1,"alexStatus":"unread","id":"ps_20260331_2115_001","shortId":"P436"},
+  {"date":"2026-03-31","time":"21:15","grade":"🔵","title":"Claude Code源码泄露 — 51.2万行TS，NPM source map未关闭","source":"@li9292+HN","sourceUrl":"https://x.com/li9292/status/2038947190157328879","domain":"Tooling","summary":"Claude Code源码泄露，含CLI入口/终端UI/工具系统/隐藏功能（Buddy System/Auto-Dream），HN 561pt","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260331_2115_002","shortId":"P437"},
+  {"date":"2026-03-31","time":"21:15","grade":"🔵","title":"Google 200M时序基础模型 16k上下文 — HN 178pt","source":"HN","sourceUrl":"https://news.ycombinator.com/item?id=47583045","domain":"Models","summary":"Google开源200M参数时序预测基础模型，16k上下文，非Agent工程路线","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260331_2115_003","shortId":"P438"},
 ];
 
 // ─── State ──────────────────────────────────────────────────────────────────
@@ -1285,7 +1289,7 @@ function updateStats() {
   document.getElementById('sYellow').textContent = DATA.filter(d=>d.grade==='🟡').length;
   document.getElementById('sSkipped').textContent = DATA.filter(d=>d.status==='skipped').length;
   document.getElementById('sConfirmed').textContent = DATA.filter(d=>getS(d.id)==='confirmed').length;
-  document.getElementById('metaText').textContent = '最后同步：2026-03-31 18:51';
+  document.getElementById('metaText').textContent = '最后同步：2026-03-31 21:20';
 }
 
 // ─── Events ─────────────────────────────────────────────────────────────────
