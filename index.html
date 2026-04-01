@@ -1063,6 +1063,10 @@ const DATA = [
   {"date":"2026-04-01","time":"12:15","grade":"🔵","title":"Google Veo 3.1 Lite降价8倍","source":"@op7418","sourceUrl":"https://x.com/op7418/status/2039167939635708176","domain":"视频生成","summary":"视频生成模型降价，非Agent工程路线方向","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260401_1215_003","shortId":"P453"},
   {"date":"2026-04-01","time":"12:15","grade":"🔵","title":"AutoCLI v0.2.0 + autocli.ai社区","source":"@Jackywine","sourceUrl":"https://x.com/Jackywine/status/2039161496949903815","domain":"工具发布","summary":"AI自动解析网站结构转CLI，工具发布公告","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260401_1215_004","shortId":"P454"},
   {"date":"2026-04-01","time":"12:15","grade":"🔵","title":"HN: 1-Bit Bonsai LLMs商业化 (157pt/66c)","source":"HN","sourceUrl":"https://news.ycombinator.com/item?id=47593422","domain":"模型压缩","summary":"1-bit LLM商业化项目，底层模型压缩，与Agent工程路线无关","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260401_1215_005","shortId":"P455"},
+  {"date":"2026-04-01","time":"15:15","grade":"🔵","title":"Claude Code KAIROS后台AI自主功能（泄漏揭示）","source":"@bcherny","sourceUrl":"https://x.com/bcherny/status/2039211355748880445","domain":"coding-agent","summary":"Claude Code泄漏揭示KAIROS后台自主行为特性，产品内部事件延续","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260401_1515_000","shortId":"P456"},
+  {"date":"2026-04-01","time":"15:15","grade":"🔵","title":"OpenAI完成$1220亿融资，估值$8520亿","source":"@wlzh","sourceUrl":"https://x.com/wlzh/status/2039234838322913707","domain":"industry","summary":"OpenAI完成史上最大规模私募，商业融资动态","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260401_1515_001","shortId":"P457"},
+  {"date":"2026-04-01","time":"15:15","grade":"🔵","title":"LanceDB生产代码意外泄漏GitHub","source":"@OnlyXuanwo","sourceUrl":"https://x.com/OnlyXuanwo/status/2039206048062656794","domain":"tools","summary":"LanceDB生产代码泄漏，非AI安全路线级信号","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260401_1515_002","shortId":"P458"},
+  {"date":"2026-04-01","time":"15:15","grade":"🔵","title":"Claude Code Unpacked: A visual guide (HN 167pt)","source":"HN","sourceUrl":"https://news.ycombinator.com/item?id=47597085","domain":"coding-agent","summary":"Claude Code工具使用可视化教程，工具技巧","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260401_1515_003","shortId":"P459"},
 ];
 
 // ─── State ──────────────────────────────────────────────────────────────────
@@ -1306,7 +1310,7 @@ function updateStats() {
   document.getElementById('sYellow').textContent = DATA.filter(d=>d.grade==='🟡').length;
   document.getElementById('sSkipped').textContent = DATA.filter(d=>d.status==='skipped').length;
   document.getElementById('sConfirmed').textContent = DATA.filter(d=>getS(d.id)==='confirmed').length;
-  document.getElementById('metaText').textContent = '最后同步：2026-04-01 12:20';
+  document.getElementById('metaText').textContent = '最后同步：2026-04-01 15:19';
 }
 
 // ─── Events ─────────────────────────────────────────────────────────────────
