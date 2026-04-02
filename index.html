@@ -1101,6 +1101,12 @@ const DATA = [
   {"date":"2026-04-02","time":"19:49","grade":"🔵","title":"Investigating Autonomous Agent Contributions in the Wild","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2604.00917","domain":"Coding Agent","summary":"真实项目中coding agent贡献统计研究，方法无迁移价值","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260402_1949_002","shortId":"P491"},
   {"date":"2026-04-02","time":"19:49","grade":"🔵","title":"Executing as You Generate: Hiding Execution Latency","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2604.00491","domain":"Coding Agent","summary":"并行执行优化工程技巧，不改变路线","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260402_1949_003","shortId":"P492"},
   {"date":"2026-04-02","time":"19:49","grade":"🔵","title":"CivicShield: Defense for Government-Facing AI Chatbots","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2603.29062","domain":"AI Safety","summary":"政府chatbot多层防御，垂直场景方法不通用","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260402_1949_004","shortId":"P493"},
+  {"date":"2026-04-02","time":"21:15","grade":"🔵","title":"TRAE发布SOLO独立客户端","source":"@op7418","sourceUrl":"https://x.com/op7418/status/2039682233737605381","domain":"AI工具","summary":"TRAE推出SOLO独立客户端，支持网页+PC端，内置Skills市场","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260402_2115_000","shortId":"P494"},
+  {"date":"2026-04-02","time":"21:15","grade":"🔵","title":"Codex开源额度小 — 开发者吐槽","source":"@jakevin7","sourceUrl":"https://x.com/jakevin7/status/2039617621839299026","domain":"AI工具","summary":"OpenAI Codex团队额度过小，限制开源开发者参与","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260402_2115_001","shortId":"P495"},
+  {"date":"2026-04-02","time":"21:15","grade":"🔵","title":"OpenClaw中国镜像（BytePlus/Volcano Engine）","source":"@li9292","sourceUrl":"https://x.com/li9292/status/2039614460370043203","domain":"AI生态","summary":"字节旗下BytePlus推出OpenClaw社区官方中国镜像站","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260402_2115_002","shortId":"P496"},
+  {"date":"2026-04-02","time":"21:15","grade":"🔵","title":"Vibe Island — 灵动岛式Claude Code状态监控","source":"@onevcat","sourceUrl":"https://x.com/onevcat/status/2039633778717638869","domain":"AI工具","summary":"Vibe Island Mac App，多终端监控Claude Code状态，OSC 9/777兼容","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260402_2115_003","shortId":"P497"},
+  {"date":"2026-04-02","time":"21:15","grade":"🔵","title":"Claude Code优化NASA Artemis II登月轨迹","source":"@om_patel5","sourceUrl":"https://x.com/om_patel5/status/2039522385007898703","domain":"AI应用","summary":"NASA用Claude Code模拟14000种中止场景，5天完成原4-6月工作","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260402_2115_004","shortId":"P498"},
+  {"date":"2026-04-02","time":"21:15","grade":"🔵","title":"AMD Lemonade — 开源本地LLM服务器","source":"HN 47612724","sourceUrl":"https://news.ycombinator.com/item?id=47612724","domain":"AI基础设施","summary":"AMD开源快速本地LLM服务器，GPU+CPU混合推理，73pt","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260402_2115_005","shortId":"P499"},
 ];
 
 // ─── State ──────────────────────────────────────────────────────────────────
@@ -1344,7 +1350,7 @@ function updateStats() {
   document.getElementById('sYellow').textContent = DATA.filter(d=>d.grade==='🟡').length;
   document.getElementById('sSkipped').textContent = DATA.filter(d=>d.status==='skipped').length;
   document.getElementById('sConfirmed').textContent = DATA.filter(d=>getS(d.id)==='confirmed').length;
-  document.getElementById('metaText').textContent = '最后同步：2026-04-02 19:51';
+  document.getElementById('metaText').textContent = '最后同步：2026-04-02 21:18';
 }
 
 // ─── Events ─────────────────────────────────────────────────────────────────
