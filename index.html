@@ -1075,6 +1075,10 @@ const DATA = [
   {"date":"2026-04-01","time":"21:15","grade":"🔵","title":"HF预训练数据意外公开","source":"@victormustar","sourceUrl":"https://x.com/victormustar/status/2039329952328216641","domain":"数据安全","summary":"Hugging Face实习生误设权限导致预训练数据集公开，包括网页/PDF/合成数据","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260401_2115_001","shortId":"P465"},
   {"date":"2026-04-01","time":"21:15","grade":"🔵","title":"Codex集成Claude多模型代理层","source":"@ilovek8s","sourceUrl":"https://x.com/ilovek8s/status/2039248090277003655","domain":"工具集成","summary":"codex-proxy.js透明代理层，同时支持OpenAI Codex和Anthropic Claude系列模型","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260401_2115_002","shortId":"P466"},
   {"date":"2026-04-01","time":"21:15","grade":"🔵","title":"HN: I Quit. The Clankers Won","source":"HN","sourceUrl":"https://news.ycombinator.com/item?id=47598511","domain":"行业情绪","summary":"前端开发者讨论AI时代是否应继续写博客/coding，主张坚持原创写作","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260401_2115_003","shortId":"P467"},
+  {"date":"2026-04-02","time":"09:15","grade":"🔵","title":"Jackywine: Geist Serif字体即将发布","source":"@Jackywine","sourceUrl":"https://x.com/Jackywine/status/2039503058720444438","domain":"设计","summary":"Vercel衬线字体Geist Serif开发中，与AI工程路线无关。","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260402_0915_000","shortId":"P468"},
+  {"date":"2026-04-02","time":"09:15","grade":"🔵","title":"AYi_AInotes: Claude Code NO_FLICKER模式","source":"@AYi_AInotes","sourceUrl":"https://x.com/AYi_AInotes/status/2039494383737897051","domain":"工具","summary":"Claude Code实验性终端渲染模式更新，工具功能级，不改变学什么。","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260402_0915_001","shortId":"P469"},
+  {"date":"2026-04-02","time":"09:15","grade":"🔵","title":"zstmfhy: AI漫剧自动化生产","source":"@zstmfhy","sourceUrl":"https://x.com/zstmfhy/status/2039501312908468225","domain":"应用","summary":"AI短剧本地自动化，垂直应用场景，不改变Agent工程路线。","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260402_0915_002","shortId":"P470"},
+  {"date":"2026-04-02","time":"09:15","grade":"🔵","title":"HN: StepFun 3.5 Flash #1 cost-effective (47602879, 139pt)","source":"HN","sourceUrl":"https://news.ycombinator.com/item?id=47602879","domain":"模型","summary":"StepFun 3.5 Flash OpenClaw任务基准第一，模型性能信号，不改变框架学习路线。","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260402_0915_003","shortId":"P471"},
 ];
 
 // ─── State ──────────────────────────────────────────────────────────────────
@@ -1318,7 +1322,7 @@ function updateStats() {
   document.getElementById('sYellow').textContent = DATA.filter(d=>d.grade==='🟡').length;
   document.getElementById('sSkipped').textContent = DATA.filter(d=>d.status==='skipped').length;
   document.getElementById('sConfirmed').textContent = DATA.filter(d=>getS(d.id)==='confirmed').length;
-  document.getElementById('metaText').textContent = '最后同步：2026-04-01 21:21';
+  document.getElementById('metaText').textContent = '最后同步：2026-04-02 09:19';
 }
 
 // ─── Events ─────────────────────────────────────────────────────────────────
