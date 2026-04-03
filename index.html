@@ -1111,6 +1111,10 @@ const DATA = [
   {"date":"2026-04-03","time":"09:15","grade":"🔵","title":"Google Gemma 4 开源，Apache 2.0 本地部署","source":"HN 47616361","sourceUrl":"https://news.ycombinator.com/item?id=47616361","domain":"model-release","summary":"Google Gemma 4 开源发布 1117pt，Apache 2.0，支持高推理+多模态，Mac M3/M4 本地可跑，但不改变 Agent 框架路线","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260403_0915_001","shortId":"P501"},
   {"date":"2026-04-03","time":"09:15","grade":"🔵","title":"Cursor 3 发布","source":"HN 47618084","sourceUrl":"https://news.ycombinator.com/item?id=47618084","domain":"tools","summary":"Cursor 3 发布 275pt，工具版本更新，不改变路线","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260403_0915_002","shortId":"P502"},
   {"date":"2026-04-03","time":"09:15","grade":"🔵","title":"OpenAI 收购 TBPN 媒体网络","source":"HN 47617376","sourceUrl":"https://news.ycombinator.com/item?id=47617376","domain":"business","summary":"OpenAI 收购 TBPN 强化营销，142pt，商业动态非技术路线","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260403_0915_003","shortId":"P503"},
+  {"date":"2026-04-03","time":"09:50","grade":"🟡","title":"KAT-Coder-V2: Specialize-then-Unify Agentic Coding","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2603.27703","domain":"coding-agent","summary":"快手团队五专家域（SWE/WebCoding/Terminal/WebSearch/GeneralCode）统一框架，Coding Agent架构分解新范式","status":"pushed","routeImpact":"T2 Coding Agent方向：multi-domain coding agent架构分解实例","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260403_0950_000","shortId":"P504"},
+  {"date":"2026-04-03","time":"09:50","grade":"🟡","title":"Beyond Elicitation: Provision-based Prompt Optimization","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2511.10465","domain":"context-engineering","summary":"新prompt优化范式：从激活模型已有能力(elicitation)转向主动提供外部知识(provision)，知识密集型任务效果更好","status":"pushed","routeImpact":"T2 Context Engineering：prompt优化新方向","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260403_0950_001","shortId":"P505"},
+  {"date":"2026-04-03","time":"09:50","grade":"🟡","title":"SRAG: Structured Data Improves Vector Retrieval","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2603.26670","domain":"agentic-rag","summary":"结构化数据（KG三元组）+向量检索混合RAG，提升知识密集型问答准确率","status":"pushed","routeImpact":"T2 Agentic RAG方向：混合检索方法","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260403_0950_002","shortId":"P506"},
+  {"date":"2026-04-03","time":"09:50","grade":"🟡","title":"Emergent Social Intelligence Risks in Generative Multi-Agent Systems","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2603.27771","domain":"ai-safety","summary":"多Agent系统从原型走向实际部署时涌现的社会智能风险（联合规划/资源分配/协商），I012证据","status":"pushed","routeImpact":"AI安全赛道I012：多Agent社会风险系统性证据","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260403_0950_003","shortId":"P507"},
 ];
 
 // ─── State ──────────────────────────────────────────────────────────────────
@@ -1354,7 +1358,7 @@ function updateStats() {
   document.getElementById('sYellow').textContent = DATA.filter(d=>d.grade==='🟡').length;
   document.getElementById('sSkipped').textContent = DATA.filter(d=>d.status==='skipped').length;
   document.getElementById('sConfirmed').textContent = DATA.filter(d=>getS(d.id)==='confirmed').length;
-  document.getElementById('metaText').textContent = '最后同步：2026-04-03 09:18';
+  document.getElementById('metaText').textContent = '最后同步：2026-04-03 09:50';
 }
 
 // ─── Events ─────────────────────────────────────────────────────────────────
