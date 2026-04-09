@@ -1152,6 +1152,13 @@ const DATA = [
   {"date":"2026-04-09","time":"07:15","grade":"🔵","title":"OpenAI API 支持 WebP 格式","source":"@yetone","sourceUrl":"https://x.com/yetone/status/2042132704519712881","domain":"Tooling","summary":"OpenAI API更新，支持WebP图片格式。","status":"skipped","routeImpact":"无","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260409_0715_003","shortId":"P542"},
   {"date":"2026-04-09","time":"07:15","grade":"🔵","title":"Copilot 用量与 Claude 对比","source":"@tualatrix","sourceUrl":"https://x.com/tualatrix/status/2042103131530785200","domain":"Tooling","summary":"用户分享Copilot CLI在处理长任务时的用量体验，相比Claude Opus更经济。","status":"skipped","routeImpact":"无","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260409_0715_004","shortId":"P543"},
   {"date":"2026-04-09","time":"07:15","grade":"🔵","title":"开源金融技能集","source":"@himself65","sourceUrl":"https://twitter.com/himself65/status/2042108197696319842","domain":"Tooling","summary":"一个用于从公开数据分析股票的Claude Code金融技能仓库获得社区关注。","status":"skipped","routeImpact":"无","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260409_0715_005","shortId":"P544"},
+  {"date":"2026-04-09","time":"21:15","grade":"🔴","title":"Anthropic 推出 Claude Managed Agents 公测","source":"@AYi_AInotes","sourceUrl":"https://x.com/AYi_AInotes/status/2042032031148994730","domain":"Agent Infrastructure","summary":"Anthropic推出生产级AI代理托管服务，包括沙盒、重试、监控和安全功能，推动AI从工具向同事级生产力转型。","status":"pushed","routeImpact":"标志着 Agent as a Service 商业模式成熟，影响Agent工程技术栈选型和职业方向。","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260409_2115_000","shortId":"P545"},
+  {"date":"2026-04-09","time":"21:15","grade":"🟡","title":"Opus 4.6 实现数据库安全操作","source":"@himself65","sourceUrl":"https://x.com/himself65/status/2042166857265033378","domain":"AI Safety","summary":"用户反馈使用Opus 4.6两个月，成功避免了数据库误删操作，验证了通过先进模型提升关键任务安全性的可行性。","status":"pushed","routeImpact":"提供了AI在关键任务中应用安全的具体工程案例。","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260409_2115_001","shortId":"P546"},
+  {"date":"2026-04-09","time":"21:15","grade":"🔵","title":"Anthropic警告BadClaude项目","source":"@Jackywine","sourceUrl":"https://x.com/Jackywine/status/2042220285894771016","domain":"Community","summary":"Anthropic官方要求爆火的BadClaude项目改名，显示出AI公司对品牌形象的保护日益重视。","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260409_2115_002","shortId":"P547"},
+  {"date":"2026-04-09","time":"21:15","grade":"🔵","title":"AI时代顶级学习流程分享","source":"@Jackywine","sourceUrl":"https://x.com/Jackywine/status/2042185143193104580","domain":"Methodology","summary":"博主分享了一套结合AI工具的七步学习法，旨在帮助非专业人士系统掌握复杂领域知识。","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260409_2115_003","shortId":"P548"},
+  {"date":"2026-04-09","time":"21:15","grade":"🔵","title":"《救猫咪》编剧技巧对产品设计的启发","source":"@bearliu","sourceUrl":"https://x.com/bearliu/status/2042228553052283135","domain":"Product Design","summary":"通过阅读好莱坞编剧指南，总结出可应用于产品设计和故事创作的普适性叙事原则。","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260409_2115_004","shortId":"P549"},
+  {"date":"2026-04-09","time":"21:15","grade":"🔵","title":"Neovim Mason工具管理扩展","source":"@_dotfiles","sourceUrl":"https://x.com/_dotfiles/status/2042038494629884401","domain":"DevEnv","summary":"mason-tool-installer插件可以统一管理LSP服务器和其他开发工具，简化Neovim环境配置。","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260409_2115_005","shortId":"P550"},
+  {"date":"2026-04-09","time":"21:15","grade":"🔵","title":"《币安人生》书评","source":"@Jason23818126","sourceUrl":"https://x.com/Jason23818126/status/2042217933389398137","domain":"Crypto","summary":"书评分享了币安创始人CZ和何一的创业故事，揭示了技术与市场的互补在加密行业成功的重要性。","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260409_2115_006","shortId":"P551"},
 ];
 
 // ─── State ──────────────────────────────────────────────────────────────────
@@ -1395,7 +1402,7 @@ function updateStats() {
   document.getElementById('sYellow').textContent = DATA.filter(d=>d.grade==='🟡').length;
   document.getElementById('sSkipped').textContent = DATA.filter(d=>d.status==='skipped').length;
   document.getElementById('sConfirmed').textContent = DATA.filter(d=>getS(d.id)==='confirmed').length;
-  document.getElementById('metaText').textContent = '最后同步：2026-04-09 15:17';
+  document.getElementById('metaText').textContent = '最后同步：2026-04-09 21:18';
 }
 
 // ─── Events ─────────────────────────────────────────────────────────────────
