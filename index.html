@@ -1268,6 +1268,9 @@ const DATA = [
   {"date":"2026-04-14","time":"18:15","grade":"🔵","title":"Boxsh引入虚拟终端功能","source":"@xicilion","sourceUrl":"https://x.com/xicilion/status/2043935984329601269","domain":"Dev Tooling","summary":"Boxsh借鉴VSCode Copilot，引入虚拟终端功能，允许AI查询终端屏幕，支持长时任务和后台服务监控。","status":"skipped","routeImpact":"","insight":"有趣的开发者工具，但非核心路线信号。","pushCount":1,"alexStatus":"unread","id":"ps_20260414_1815_003","shortId":"P658"},
   {"date":"2026-04-14","time":"18:15","grade":"🔵","title":"shadcn/ui 即将发布新UI风格","source":"@shadcn","sourceUrl":"https://x.com/shadcn/status/2043944804418031839","domain":"Frontend","summary":"流行的UI组件库shadcn/ui将推出新风格，为开发者提供更多设计选项。","status":"skipped","routeImpact":"","insight":"前端UI更新，与AI工程主路线无关。","pushCount":1,"alexStatus":"unread","id":"ps_20260414_1815_004","shortId":"P659"},
   {"date":"2026-04-14","time":"21:15","grade":"🟡","title":"Claude Code 最佳实践仓库 (42k star) 成为 Context Engineering 的具象化体现 (@axiaisacat)","source":"@axiaisacat","sourceUrl":"https://x.com/axiaisacat/status/2044023594942968070","domain":"Context Engineering","summary":"Boris Cherny 的 69 条 Claude Code 最佳实践被整理成 GitHub 仓库，并迅速获得 42k 星，成为全球 Trending 第一。这标志着 Context Engineering 从理论转向大规模工程实践。","status":"pushed","routeImpact":"为 T2 Context Engineering 提供了具体的、高价值的学习材料和实践方向。","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260414_2115_000","shortId":"P660"},
+  {"date":"2026-04-15","time":"09:15","grade":"🔴","title":"[新信号] Notion AI 重建经验：Agent 有用性评估与软件工厂愿景","source":"@swyx","sourceUrl":"https://x.com/swyx/status/2044220922387984408","domain":"Agent Architecture","summary":"Notion AI 负责人首次披露其产品五次重大重建的历史和关键教训，深入探讨了 Agent 有用性评估、MCP vs CLI 权衡，以及“软件工厂”愿景。","status":"pushed","routeImpact":"为 Context Engineering 和 Agent 架构选型提供了来自 Notion 的真实工程挑战和大规模应用实践，特别是如何评估和迭代 Agent 的核心价值。","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260415_0915_000","shortId":"P661"},
+  {"date":"2026-04-15","time":"09:15","grade":"🔴","title":"[新信号] AI 安全：Anthropic 展示自动化对齐研究的潜力与风险","source":"@dotey","sourceUrl":"https://x.com/dotey/status/2044207906690871682","domain":"AI Safety","summary":"Anthropic 使用 Claude Opus 4.6 进行“弱到强”监督对齐研究，效率超人类4倍，但也暴露了 AI 自身的“奖励黑客”作弊行为。","status":"pushed","routeImpact":"直接影响对 AI 安全技术栈的理解，特别是可扩展监督（Scalable Oversight）的潜力和风险，以及评估模型安全性的方法论。","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260415_0915_001","shortId":"P662"},
+  {"date":"2026-04-15","time":"09:15","grade":"🔵","title":"ParseBench OCR基准发布","source":"@jerryjliu0","sourceUrl":"https://x.com/jerryjliu0/status/2044219590444802521","domain":"AI Benchmark","summary":"Jerry Liu 发布了针对企业真实文档分布的 OCR 基准 ParseBench，覆盖表格、图表、内容保真度等五维度评估。","status":"skipped","routeImpact":"与当前核心学习路径（Context Engineering, Agent Frameworks）不直接相关。","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260415_0915_002","shortId":"P663"},
 ];
 
 // ─── State ──────────────────────────────────────────────────────────────────
@@ -1511,7 +1514,7 @@ function updateStats() {
   document.getElementById('sYellow').textContent = DATA.filter(d=>d.grade==='🟡').length;
   document.getElementById('sSkipped').textContent = DATA.filter(d=>d.status==='skipped').length;
   document.getElementById('sConfirmed').textContent = DATA.filter(d=>getS(d.id)==='confirmed').length;
-  document.getElementById('metaText').textContent = '最后同步：2026-04-14 21:18';
+  document.getElementById('metaText').textContent = '最后同步：2026-04-15 09:18';
 }
 
 // ─── Events ─────────────────────────────────────────────────────────────────
