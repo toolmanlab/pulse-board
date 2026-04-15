@@ -1271,6 +1271,8 @@ const DATA = [
   {"date":"2026-04-15","time":"09:15","grade":"🔴","title":"[新信号] Notion AI 重建经验：Agent 有用性评估与软件工厂愿景","source":"@swyx","sourceUrl":"https://x.com/swyx/status/2044220922387984408","domain":"Agent Architecture","summary":"Notion AI 负责人首次披露其产品五次重大重建的历史和关键教训，深入探讨了 Agent 有用性评估、MCP vs CLI 权衡，以及“软件工厂”愿景。","status":"pushed","routeImpact":"为 Context Engineering 和 Agent 架构选型提供了来自 Notion 的真实工程挑战和大规模应用实践，特别是如何评估和迭代 Agent 的核心价值。","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260415_0915_000","shortId":"P661"},
   {"date":"2026-04-15","time":"09:15","grade":"🔴","title":"[新信号] AI 安全：Anthropic 展示自动化对齐研究的潜力与风险","source":"@dotey","sourceUrl":"https://x.com/dotey/status/2044207906690871682","domain":"AI Safety","summary":"Anthropic 使用 Claude Opus 4.6 进行“弱到强”监督对齐研究，效率超人类4倍，但也暴露了 AI 自身的“奖励黑客”作弊行为。","status":"pushed","routeImpact":"直接影响对 AI 安全技术栈的理解，特别是可扩展监督（Scalable Oversight）的潜力和风险，以及评估模型安全性的方法论。","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260415_0915_001","shortId":"P662"},
   {"date":"2026-04-15","time":"09:15","grade":"🔵","title":"ParseBench OCR基准发布","source":"@jerryjliu0","sourceUrl":"https://x.com/jerryjliu0/status/2044219590444802521","domain":"AI Benchmark","summary":"Jerry Liu 发布了针对企业真实文档分布的 OCR 基准 ParseBench，覆盖表格、图表、内容保真度等五维度评估。","status":"skipped","routeImpact":"与当前核心学习路径（Context Engineering, Agent Frameworks）不直接相关。","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260415_0915_002","shortId":"P663"},
+  {"date":"2026-04-15","time":"09:50","grade":"🟡","title":"An Agentic Multi-Agent Architecture for Cybersecurity Risk Management","source":"arxiv","sourceUrl":"https://arxiv.org/abs/2603.20131","domain":"Multi-Agent, AI Safety","summary":"论文提出了一个用于网络安全风险管理的 Agentic 多智能体架构，通过自动化评估和报告生成，解决了中小企业成本高、周期长、专家稀缺的痛点。其架构设计和在真实商业场景的落地思路，对探索 Agent 在复杂企业环境的应用有参考价值。","status":"pushed","routeImpact":"提供了将多智能体架构应用于高价值企业服务的具体范例，可作为 T1 Agent 框架选型中，评估框架在真实世界问题解决能力的参考。","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260415_0950_000","shortId":"P664"},
+  {"date":"2026-04-15","time":"09:50","grade":"🔵","title":"From Intuition to Investigation: A Tool-Augmented Reasoning MLLM Framework for Generalizable Face Anti-Spoofing","source":"arxiv","sourceUrl":"https://arxiv.org/abs/2603.01038","domain":"Tool Use, CV","summary":"论文提出一个工具增强的 MLLM 框架用于人脸防伪，虽然匹配 “tool use” 关键词，但技术和应用领域（CV 安全）与当前关注的通用 Agent 或上下文工程路线关联度较低。","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260415_0950_001","shortId":"P665"},
 ];
 
 // ─── State ──────────────────────────────────────────────────────────────────
@@ -1514,7 +1516,7 @@ function updateStats() {
   document.getElementById('sYellow').textContent = DATA.filter(d=>d.grade==='🟡').length;
   document.getElementById('sSkipped').textContent = DATA.filter(d=>d.status==='skipped').length;
   document.getElementById('sConfirmed').textContent = DATA.filter(d=>getS(d.id)==='confirmed').length;
-  document.getElementById('metaText').textContent = '最后同步：2026-04-15 09:18';
+  document.getElementById('metaText').textContent = '最后同步：2026-04-15 09:51';
 }
 
 // ─── Events ─────────────────────────────────────────────────────────────────
