@@ -1290,6 +1290,7 @@ const DATA = [
   {"date":"2026-04-15","time":"18:15","grade":"🟡","title":"AI 辅助逆向工程工具出现","source":"@axiaisacat","sourceUrl":"https://x.com/axiaisacat/status/2044324733479432425","domain":"Tooling","summary":"Claude Code 新推出的 decompile 命令，能够一键反编译 APK 等文件，自动提取 API 接口和调用链，展示了 AI Agent 在安全研究和竞品分析领域的潜力。","status":"pushed","routeImpact":"提供了一个新的学习和应用方向。","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260415_1815_003","shortId":"P680"},
   {"date":"2026-04-15","time":"18:15","grade":"🔵","title":"ParseBench 基准发布","source":"@jerryjliu0","sourceUrl":"https://twitter.com/jerryjliu0/status/2044219590444802521","domain":"Tooling","summary":"针对企业级文档OCR的综合基准，与当前路线关系较弱。","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260415_1815_004","shortId":"P681"},
   {"date":"2026-04-15","time":"18:15","grade":"🔵","title":"Cognition发布SWE-check","source":"@swyx","sourceUrl":"https://twitter.com/swyx/status/2044235409019023496","domain":"Tooling","summary":"Bug检测模型，偏应用层。","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260415_1815_005","shortId":"P682"},
+  {"date":"2026-04-16","time":"09:50","grade":"🟡","title":"A Multi-Agent Framework for Goal-Directed Dialogue in Tasks with Structured Intent","source":"HF","sourceUrl":"https://huggingface.co/papers/2604.05834","domain":"Agent Architecture","summary":"提出了一个新颖的多智能体对话框架，用于处理具有复杂结构化意图的任务，对构建更强大的 Agent 工作流有直接参考价值。","status":"pushed","routeImpact":"值得了解","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260416_0950_000","shortId":"P683"},
 ];
 
 // ─── State ──────────────────────────────────────────────────────────────────
@@ -1533,7 +1534,7 @@ function updateStats() {
   document.getElementById('sYellow').textContent = DATA.filter(d=>d.grade==='🟡').length;
   document.getElementById('sSkipped').textContent = DATA.filter(d=>d.status==='skipped').length;
   document.getElementById('sConfirmed').textContent = DATA.filter(d=>getS(d.id)==='confirmed').length;
-  document.getElementById('metaText').textContent = '最后同步：2026-04-15 18:19';
+  document.getElementById('metaText').textContent = '最后同步：2026-04-16 09:51';
 }
 
 // ─── Events ─────────────────────────────────────────────────────────────────
