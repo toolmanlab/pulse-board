@@ -1293,6 +1293,7 @@ const DATA = [
   {"date":"2026-04-16","time":"09:50","grade":"🟡","title":"A Multi-Agent Framework for Goal-Directed Dialogue in Tasks with Structured Intent","source":"HF","sourceUrl":"https://huggingface.co/papers/2604.05834","domain":"Agent Architecture","summary":"提出了一个新颖的多智能体对话框架，用于处理具有复杂结构化意图的任务，对构建更强大的 Agent 工作流有直接参考价值。","status":"pushed","routeImpact":"值得了解","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260416_0950_000","shortId":"P683"},
   {"date":"2026-04-16","time":"12:15","grade":"🔴","title":"[第2次推送] AI 安全成为工程实践必选项","source":"@dotey, HN","sourceUrl":"https://news.ycombinator.com/item?id=47712345","domain":"AI Safety","summary":"继多个知名 AI 产品爆出安全漏洞后，AI 安全不再是理论探讨，而是进入工程实践的必选项。","status":"pushed","routeImpact":"要求 Alex 在学习路线上为 AI 安全相关的项目和技术分配时间。","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260416_1215_000","shortId":"P684"},
   {"date":"2026-04-16","time":"12:15","grade":"🟡","title":"Agent 记忆架构新范式","source":"@akshay_pachaar","sourceUrl":"https://twitter.com/akshay_pachaar/status/1234567890","domain":"Context Engineering","summary":"一个结合了 RAG 和状态机的新颖 Agent 记忆架构，旨在解决长期任务中上下文丢失和状态不一致的问题。","status":"pushed","routeImpact":"为 Agent Memory 提供了具体的、可实践的实现思路。","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260416_1215_001","shortId":"P685"},
+  {"date":"2026-04-16","time":"15:15","grade":"🔴","title":"[第12次推送] Agent架构核心转向 \"Harness Layer\"，获OpenAI/Cloudflare官方验证","source":"smol.ai","sourceUrl":"https://news.smol.ai/issues/26-04-15-not-much/","domain":"Agent Architecture","summary":"OpenAI Agents SDK将Harness解耦，Cloudflare推出沙箱化Agent执行环境Project Think，验证了Harness Layer已成为行业标准架构。","status":"pushed","routeImpact":"强化了Agent工程需围绕外部化Harness构建的结论，而非模型本身。","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260416_1515_000","shortId":"P686"},
 ];
 
 // ─── State ──────────────────────────────────────────────────────────────────
@@ -1536,7 +1537,7 @@ function updateStats() {
   document.getElementById('sYellow').textContent = DATA.filter(d=>d.grade==='🟡').length;
   document.getElementById('sSkipped').textContent = DATA.filter(d=>d.status==='skipped').length;
   document.getElementById('sConfirmed').textContent = DATA.filter(d=>getS(d.id)==='confirmed').length;
-  document.getElementById('metaText').textContent = '最后同步：2026-04-16 12:17';
+  document.getElementById('metaText').textContent = '最后同步：2026-04-16 15:23';
 }
 
 // ─── Events ─────────────────────────────────────────────────────────────────
