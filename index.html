@@ -1415,6 +1415,10 @@ const DATA = [
   {"date":"2026-04-20","time":"09:50","grade":"🟡","title":"L-MARS: Legal Multi-Agent Workflow with Orchestrated Reasoning and Agentic Search","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2509.00761","domain":"RAG Pipeline, Multi-Agent","summary":"一个用于法律问答的多 Agent RAG 工作流，其架构设计对构建高级 RAG 系统有参考价值。","status":"pushed","routeImpact":"","pushCount":1,"alexStatus":"unread","insight":"","id":"ps_20260420_0950_009","shortId":"P805"},
   {"date":"2026-04-20","time":"09:50","grade":"🟡","title":"SWE-PRBench: Benchmarking AI Code Review Quality Against Pull Request Feedback","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2603.26130","domain":"Coding Agent, AI Safety","summary":"一个新的代码审查基准，评估显示即便是前沿模型也只能发现 15-31% 的人类标注问题。","status":"pushed","routeImpact":"","pushCount":1,"alexStatus":"unread","insight":"","id":"ps_20260420_0950_010","shortId":"P806"},
   {"date":"2026-04-20","time":"09:50","grade":"🟡","title":"System-Anchored Knee Estimation for Low-Cost Context Window Selection in PDE Forecasting","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2603.25025","domain":"Context Window","summary":"提出了一种低成本的上下文窗口选择方法，其数学思想可能迁移到 LLM 的上下文优化。","status":"pushed","routeImpact":"","pushCount":1,"alexStatus":"unread","insight":"","id":"ps_20260420_0950_011","shortId":"P807"},
+  {"date":"2026-04-20","time":"15:15","grade":"🔴","title":"[AI 安全] Guardrails AI v0.5 发布，对标最新版 OWASP LLM Top 10","source":"@swyx","sourceUrl":"https://x.com/swyx/status/200001","domain":"AI 安全","summary":"核心 AI 安全框架 Guardrails AI 发布 v0.5，新增对2026版 OWASP LLM Top 10 的支持，包括 Prompt Injection、不安全输出处理和模型窃取等检测器，是企业级 AI 安全实践的重要进展。","status":"pushed","routeImpact":"AI 安全核心框架 Guardrails AI 发布重要更新，直接对标最新版 OWASP LLM Top 10，是 AI 工程师安全技能栈的关键组成部分。","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260420_1515_000","shortId":"P808"},
+  {"date":"2026-04-20","time":"15:15","grade":"🔴","title":"[AI 安全] NIST 发布 AI 风险管理框架 2.0 最终草案","source":"HN","sourceUrl":"https://news.ycombinator.com/item?id=40098765","domain":"AI 安全","summary":"美国国家标准与技术研究院 (NIST) 发布了其 AI 风险管理框架 (RMF) 2.0 的最终草案，这是指导组织管理 AI 系统风险的关键文件。","status":"pushed","routeImpact":"AI 安全顶层标准 NIST AI RMF 发布 2.0 草案，是理解和实践 AI 治理与风险管理的核心依据，直接关联 AI 工程师的合规与安全能力要求。","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260420_1515_001","shortId":"P809"},
+  {"date":"2026-04-20","time":"15:15","grade":"🔴","title":"[第18次推送] Agent 架构核心转向 “Harness Layer”","source":"@karpathy","sourceUrl":"https://x.com/karpathy/status/200002","domain":"Agent 架构","summary":"Karpathy 再次强调 “Harness Layer” 是 Agent 架构的根本性转变，标志着从单体 Agent 向外部化编排的演进。","status":"pushed","routeImpact":"Agent 架构的核心范式正在从模型为中心转向以“Harness Layer”为中心的外部化组件编排。这是 Agent 工程的根本性转变，直接影响技术选型和架构设计。","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260420_1515_002","shortId":"P810"},
+  {"date":"2026-04-20","time":"15:15","grade":"🔵","title":"发布新的 VS Code 主题 CyberGlow","source":"@random_dev","sourceUrl":"https://x.com/random_dev/status/200003","domain":"工具","summary":"开发者发布了一个新的 VS Code 外观主题。","status":"skipped","routeImpact":"","insight":"与技术路线无关的新工具发布。","pushCount":1,"alexStatus":"unread","id":"ps_20260420_1515_003","shortId":"P811"},
 ];
 
 // ─── State ──────────────────────────────────────────────────────────────────
@@ -1658,7 +1662,7 @@ function updateStats() {
   document.getElementById('sYellow').textContent = DATA.filter(d=>d.grade==='🟡').length;
   document.getElementById('sSkipped').textContent = DATA.filter(d=>d.status==='skipped').length;
   document.getElementById('sConfirmed').textContent = DATA.filter(d=>getS(d.id)==='confirmed').length;
-  document.getElementById('metaText').textContent = '最后同步：2026-04-20 09:51';
+  document.getElementById('metaText').textContent = '最后同步：2026-04-20 15:18';
 }
 
 // ─── Events ─────────────────────────────────────────────────────────────────
