@@ -1680,6 +1680,11 @@ const DATA = [
   {"date":"2026-04-29","time":"11:15","grade":"🔵","title":"美国限制华虹7nm工艺","source":"@xiongchun007","sourceUrl":"https://x.com/xiongchun007/status/2049447543738929163","domain":"地缘政治/硬件","summary":"美国升级对华芯片限制，要求设备商停止向华虹出货。","status":"skipped","routeImpact":"","insight":"跳过：与AI软件学习路线无关。","pushCount":1,"alexStatus":"unread","id":"ps_20260429_1115_025","shortId":"P1070"},
   {"date":"2026-04-29","time":"03:15","grade":"🔵","title":"选号工具Vibe","source":"@luoleiorg","sourceUrl":"https://x.com/luoleiorg/status/2049326633270886904","domain":"个人项目","summary":"分享一个快速挑选手机号码的个人小工具。","status":"skipped","routeImpact":"","insight":"跳过：无关。","pushCount":1,"alexStatus":"unread","id":"ps_20260429_0315_026","shortId":"P1071"},
   {"date":"2026-04-29","time":"10:00","grade":"🔵","title":"汇票起源故事","source":"@bearliu","sourceUrl":"https://x.com/bearliu/status/2049428724118880618","domain":"历史","summary":"分享小说中关于圣殿骑士团发明汇票的历史故事。","status":"skipped","routeImpact":"","insight":"跳过：无关。","pushCount":1,"alexStatus":"unread","id":"ps_20260429_1000_027","shortId":"P1072"},
+  {"date":"2026-04-30","time":"09:50","grade":"🔴","title":"GEMS: Agent-Native Multimodal Generation with Memory and Skills","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2604.01007","domain":"Agent Memory","summary":"提出了一种新的 AI Agent 终身记忆框架，用于处理多模态信息，对 Agent Memory 的研究有直接影响。","status":"pushed","routeImpact":"可能影响 T2-Context Engineering 方向下 Agent Memory 的技术选型。","pushCount":1,"alexStatus":"unread","insight":"","id":"ps_20260430_0950_000","shortId":"P1073"},
+  {"date":"2026-04-30","time":"09:50","grade":"🔴","title":"Experience as a Compass: Multi-agent RAG with Evolving Orchestration and Agent Prompts","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2604.00901","domain":"Agentic RAG","summary":"将多智能体（Multi-agent）与 RAG 结合，并引入了演进式的编排和智能体提示，为 Agentic RAG 提供了新的思路。","status":"pushed","routeImpact":"为 Agentic RAG 提供了新的实现范式，值得深入研究。","pushCount":1,"alexStatus":"unread","insight":"","id":"ps_20260430_0950_001","shortId":"P1074"},
+  {"date":"2026-04-30","time":"09:50","grade":"🔴","title":"UK AISI Alignment Evaluation Case-Study","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2604.00788","domain":"AI Safety","summary":"来自英国 AI 安全研究所的报告，评估了前沿模型在充当编码智能体时是否会破坏安全研究，是 AI 安全和对齐方向的重要案例。","status":"pushed","routeImpact":"提供了来自权威机构的 AI 安全评估案例，对 AI 安全方向的认知和实践有重要参考价值。","pushCount":1,"alexStatus":"unread","insight":"","id":"ps_20260430_0950_002","shortId":"P1075"},
+  {"date":"2026-04-30","time":"09:50","grade":"🔴","title":"A Multi-Agent Rhizomatic Pipeline for Non-Linear Literature Analysis","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2603.28336","domain":"Multi-Agent","summary":"提出了一种用于非线性文献分析的多智能体流程，可能为研究和信息综合提供一种全新的、突破传统线性综述的方法。","status":"pushed","routeImpact":"提出了一种全新的信息处理方法论，可能启发新的研究工具和方法。","pushCount":1,"alexStatus":"unread","insight":"","id":"ps_20260430_0950_003","shortId":"P1076"},
+  {"date":"2026-04-30","time":"09:50","grade":"🔴","title":"Context Selection for Hypothesis and Statistical Evidence Extraction from Full-Text Scientific Articles","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2603.21193","domain":"Retrieval Augmented Generation","summary":"该论文研究了如何从科学文献全文中提取假设和统计证据，这是对 RAG 流程中上下文选择和证据提取的直接技术贡献。","status":"pushed","routeImpact":"直接关系到 RAG pipeline 的优化，是 Context Engineering 的核心技术点。","pushCount":1,"alexStatus":"unread","insight":"","id":"ps_20260430_0950_004","shortId":"P1077"},
 ];
 
 // ─── State ──────────────────────────────────────────────────────────────────
@@ -1923,7 +1928,7 @@ function updateStats() {
   document.getElementById('sYellow').textContent = DATA.filter(d=>d.grade==='🟡').length;
   document.getElementById('sSkipped').textContent = DATA.filter(d=>d.status==='skipped').length;
   document.getElementById('sConfirmed').textContent = DATA.filter(d=>getS(d.id)==='confirmed').length;
-  document.getElementById('metaText').textContent = '最后同步：2026-04-29 20:42';
+  document.getElementById('metaText').textContent = '最后同步：2026-04-30 10:23';
 }
 
 // ─── Events ─────────────────────────────────────────────────────────────────
