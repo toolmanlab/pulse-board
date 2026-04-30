@@ -1685,6 +1685,7 @@ const DATA = [
   {"date":"2026-04-30","time":"09:50","grade":"🔴","title":"UK AISI Alignment Evaluation Case-Study","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2604.00788","domain":"AI Safety","summary":"来自英国 AI 安全研究所的报告，评估了前沿模型在充当编码智能体时是否会破坏安全研究，是 AI 安全和对齐方向的重要案例。","status":"pushed","routeImpact":"提供了来自权威机构的 AI 安全评估案例，对 AI 安全方向的认知和实践有重要参考价值。","pushCount":1,"alexStatus":"unread","insight":"","id":"ps_20260430_0950_002","shortId":"P1075"},
   {"date":"2026-04-30","time":"09:50","grade":"🔴","title":"A Multi-Agent Rhizomatic Pipeline for Non-Linear Literature Analysis","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2603.28336","domain":"Multi-Agent","summary":"提出了一种用于非线性文献分析的多智能体流程，可能为研究和信息综合提供一种全新的、突破传统线性综述的方法。","status":"pushed","routeImpact":"提出了一种全新的信息处理方法论，可能启发新的研究工具和方法。","pushCount":1,"alexStatus":"unread","insight":"","id":"ps_20260430_0950_003","shortId":"P1076"},
   {"date":"2026-04-30","time":"09:50","grade":"🔴","title":"Context Selection for Hypothesis and Statistical Evidence Extraction from Full-Text Scientific Articles","source":"arXiv","sourceUrl":"https://arxiv.org/abs/2603.21193","domain":"Retrieval Augmented Generation","summary":"该论文研究了如何从科学文献全文中提取假设和统计证据，这是对 RAG 流程中上下文选择和证据提取的直接技术贡献。","status":"pushed","routeImpact":"直接关系到 RAG pipeline 的优化，是 Context Engineering 的核心技术点。","pushCount":1,"alexStatus":"unread","insight":"","id":"ps_20260430_0950_004","shortId":"P1077"},
+  {"date":"2026-04-30","time":"12:34","grade":"🔵","title":"x-news-push cron failed","source":"cron","sourceUrl":"","domain":"meta","summary":"Core data collection script failed (timeout) and smol.ai fetch failed (SSL error). No new signals processed.","status":"skipped","routeImpact":"","insight":"","pushCount":1,"alexStatus":"unread","id":"ps_20260430_1234_000","shortId":"P1078"},
 ];
 
 // ─── State ──────────────────────────────────────────────────────────────────
@@ -1928,7 +1929,7 @@ function updateStats() {
   document.getElementById('sYellow').textContent = DATA.filter(d=>d.grade==='🟡').length;
   document.getElementById('sSkipped').textContent = DATA.filter(d=>d.status==='skipped').length;
   document.getElementById('sConfirmed').textContent = DATA.filter(d=>getS(d.id)==='confirmed').length;
-  document.getElementById('metaText').textContent = '最后同步：2026-04-30 10:23';
+  document.getElementById('metaText').textContent = '最后同步：2026-04-30 12:35';
 }
 
 // ─── Events ─────────────────────────────────────────────────────────────────
